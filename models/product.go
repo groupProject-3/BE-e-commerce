@@ -24,9 +24,10 @@ func (p *Product) ToProductResponse() product.ProductResponse {
 		CreatedAt: p.CreatedAt,
 		UpdatedAt: p.UpdatedAt,
 
-		Name:        p.Name,
-		Price:       p.Price,
-		Qty:         p.Price,
-		Description: p.Description,
+		Name:            p.Name,
+		Product_type_id: p.Product_type_id,
+		Price:           p.Price,
+		Qty:             p.Price,
+		Description:     p.Description,
 	}
 }
