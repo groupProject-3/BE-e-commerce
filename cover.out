@@ -1,8 +1,21 @@
 mode: set
 be/lib/database/auth/auth.go:14.31,18.2 1 1
 be/lib/database/auth/auth.go:20.72,22.144 2 1
-be/lib/database/auth/auth.go:26.2,26.18 1 1
+be/lib/database/auth/auth.go:26.2,26.18 1 0
 be/lib/database/auth/auth.go:22.144,24.3 1 1
+be/lib/database/paymentMethod/paymentMethod.go:15.40,19.2 1 1
+be/lib/database/paymentMethod/paymentMethod.go:21.90,22.48 1 1
+be/lib/database/paymentMethod/paymentMethod.go:25.2,25.16 1 1
+be/lib/database/paymentMethod/paymentMethod.go:22.48,24.3 1 1
+be/lib/database/paymentMethod/paymentMethod.go:28.119,33.27 3 1
+be/lib/database/paymentMethod/paymentMethod.go:37.2,37.16 1 1
+be/lib/database/paymentMethod/paymentMethod.go:33.27,35.3 1 1
+be/lib/database/paymentMethod/paymentMethod.go:40.71,45.27 3 1
+be/lib/database/paymentMethod/paymentMethod.go:49.2,49.26 1 1
+be/lib/database/paymentMethod/paymentMethod.go:45.27,47.3 1 1
+be/lib/database/paymentMethod/paymentMethod.go:52.84,57.27 3 1
+be/lib/database/paymentMethod/paymentMethod.go:61.2,61.23 1 1
+be/lib/database/paymentMethod/paymentMethod.go:57.27,59.3 1 1
 be/lib/database/productType/productType.go:15.38,19.2 1 1
 be/lib/database/productType/productType.go:21.89,22.53 1 1
 be/lib/database/productType/productType.go:26.2,26.21 1 1

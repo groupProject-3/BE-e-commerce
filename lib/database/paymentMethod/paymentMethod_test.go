@@ -61,6 +61,52 @@ func TestUpdateById(t *testing.T) {
 	})
 }
 
-func TestDeleteById(t *testing.T)  {
-	
+func TestDeleteById(t *testing.T) {
+	config := configs.GetConfig()
+	db := utils.InitDB(config)
+	repo := New(db)
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.AutoMigrate(&models.PaymentMethod{})
+
+	t.Run("success run DeleteById", func(t *testing.T) {
+		mockPm1 := models.PaymentMethod{Name: "anonim1"}
+		if _, err := repo.Create(mockPm1); err != nil {
+			t.Fatal()
+		}
+
+		res, err := repo.DeleteById(1)
+		assert.Nil(t, err)
+		assert.Equal(t, true, res.Valid)
+	})
+
+	t.Run("fail run DeleteById", func(t *testing.T) {
+		_, err := repo.DeleteById(10)
+		assert.NotNil(t, err)
+	})
+}
+
+func TestGetAll(t *testing.T) {
+	config := configs.GetConfig()
+	db := utils.InitDB(config)
+	repo := New(db)
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.AutoMigrate(&models.PaymentMethod{})
+
+	t.Run("success run GetAll", func(t *testing.T) {
+		mockPm1 := models.PaymentMethod{Name: "anonim1"}
+		if _, err := repo.Create(mockPm1); err != nil {
+			t.Fatal()
+		}
+
+		_, err := repo.GetAll()
+		assert.Nil(t, err)
+	})
+
+	t.Run("fail run GetAll", func(t *testing.T) {
+		if _, err := repo.DeleteById(1); err != nil {
+			t.Fatal()
+		}
+		_, err := repo.GetAll()
+		assert.NotNil(t, err)
+	})
 }
