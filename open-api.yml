@@ -367,7 +367,7 @@ paths:
                 $ref: '#/components/schemas/productHttpResponse'
               example:
                 code: 500
-                message: error internal server error for create user
+                message: error internal server error for create product
                 data:
         '200':
           description: success create product
@@ -377,7 +377,7 @@ paths:
                 $ref: '#/components/schemas/productHttpResponse'
               example:
                 code: 200
-                message: success create user
+                message: success create product
                 data: 
                   id: 1
                   created_at: 2022-02-15T02:18:32.857Z
@@ -508,10 +508,10 @@ paths:
                 $ref: '#/components/schemas/productHttpResponse'
               example:
                 code: 500
-                message: error internal server error for update user
+                message: error internal server error for update product
                 data:
         '200':
-          description: success update user
+          description: success update product
           content:
             application/json:
               schema:
@@ -681,7 +681,7 @@ paths:
                 message: success delete product
                 data:
                   deleted_at: 2022-02-15T02:18:32.857Z
-  /order/detail:
+  /order/me/detail:
     post:
       tags:
         - order detail
@@ -779,7 +779,7 @@ paths:
                       product_name: anonim 1
                       qty: 20
                       price: 20000
-  /order/detail/{id}:
+  /order/me/detail/{id}:
     delete:
       tags:
         - order detail
@@ -916,7 +916,340 @@ paths:
                 message: success delete order
                 data:
                   deleted_at: 2022-02-15T02:18:32.857Z
-
+  /product/type:
+    post:
+      tags:
+        - product type
+      summary: create product type
+      description: create product type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productTypeRequest'
+            example:
+              name: anonim type
+      responses:
+        '400':
+          description: bad request in create product type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productTypeHttpResponse'
+              example:
+                code: 400
+                message: error in request for create product type
+                data:
+        '500':
+          description: internal server error in create product type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productTypeHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for create type
+                data:
+        '200':
+          description: success create product type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productTypeHttpResponse'
+              example:
+                code: 200
+                message: success create product type
+                data: 
+                  id: 1
+                  created_at: 2022-02-15T02:18:32.857Z
+                  updated_at: 2022-02-15T02:18:32.857Z
+                  name: anonim type
+    get:
+      tags:
+        - product type
+      summary: get all product types
+      description: get all product types
+      responses:
+        '500':
+          description: internal server error in get all product types
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productTypeHttpResponse'
+              example:
+                code: 500
+                message: error internal server for get product types
+                data:
+        '200':
+          description: success get all product types
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success get all product types
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/productTypeHttpResponse'
+                    example:
+                      - id: 1
+                        created_at: 2022-02-15T02:18:32.857Z
+                        updated_at: 2022-02-15T02:18:32.857Z
+                        name: anonim type 1
+                      - id: 2
+                        created_at: 2022-02-15T02:18:32.857Z
+                        updated_at: 2022-02-15T02:18:32.857Z
+                        name: anonim2 type 2
+  /product/type/{id}:
+    put:
+      tags:
+        - product type
+      summary: update product type
+      description: update product type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productTypeRequest'
+            example:
+              name: anonim type update
+      responses:
+        '400':
+          description: bad request in update product type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productTypeHttpResponse'
+              example:
+                code: 400
+                message: error in request for update product type
+                data:
+        '500':
+          description: internal server in update product type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productTypeHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for update product type
+                data:
+        '200':
+          description: success update product type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productTypeHttpResponse'
+              example:
+                code: 200
+                message: success update product type
+                data:
+                  id: 1
+                  created_at: 2022-02-15T02:18:32.857Z
+                  updated_at: 2022-02-15T02:18:32.857Z
+                  name: anonim type update
+    delete:
+      tags:
+        - product type
+      summary: delete product type
+      description: delete product type
+      responses:
+        '500':
+          description: internal server error in delete product type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productTypeHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for delete product type
+                data:
+        '200':
+          description: success delete product type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productTypeHttpResponse'
+              example:
+                code: 200
+                message: success delete product type
+                data:
+                  deleted_at: 2022-02-15T02:18:32.857Z
+  /payment/method:
+    post:
+      tags:
+        - payment method
+      summary: create payment method
+      description: create payment method
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/paymentMethodRequest'
+            example:
+              name: anonim payment method
+      responses:
+        '400':
+          description: bad request in create payment method
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paymentMethodHttpResponse'
+              example:
+                code: 400
+                message: error in request for create payment method
+                data:
+        '500':
+          description: internal server error in create payment method
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paymentMethodHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for create payment method
+                data:
+        '200':
+          description: success create payment method
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paymentMethodHttpResponse'
+              example:
+                code: 200
+                message: success create payment method
+                data: 
+                  id: 1
+                  created_at: 2022-02-15T02:18:32.857Z
+                  updated_at: 2022-02-15T02:18:32.857Z
+                  name: anonim payment method
+    get:
+      tags:
+        - payment method
+      summary: get all payment method
+      description: get all payment method
+      responses:
+        '500':
+          description: internal server error in get all payment method
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paymentMethodHttpResponse'
+              example:
+                code: 500
+                message: error internal server for get payment method
+                data:
+        '200':
+          description: success get all payment method
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success get all payment method
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/paymentMethodHttpResponse'
+                    example:
+                      - id: 1
+                        created_at: 2022-02-15T02:18:32.857Z
+                        updated_at: 2022-02-15T02:18:32.857Z
+                        name: anonim payment method 1
+                      - id: 2
+                        created_at: 2022-02-15T02:18:32.857Z
+                        updated_at: 2022-02-15T02:18:32.857Z
+                        name: anonim2 payment method 2
+  /payment/method/{id}:
+    put:
+      tags:
+        - payment method
+      summary: update product payment method
+      description: update product payment method
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/paymentMethodRequest'
+            example:
+              name: anonim payment method update
+      responses:
+        '400':
+          description: bad request in update payment method
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paymentMethodHttpResponse'
+              example:
+                code: 400
+                message: error in request for update payment method
+                data:
+        '500':
+          description: internal server in update payment method
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paymentMethodHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for update payment method
+                data:
+        '200':
+          description: success update payment method
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paymentMethodHttpResponse'
+              example:
+                code: 200
+                message: success update payment method
+                data:
+                  id: 1
+                  created_at: 2022-02-15T02:18:32.857Z
+                  updated_at: 2022-02-15T02:18:32.857Z
+                  name: anonim payment method update
+    delete:
+      tags:
+        - payment method
+      summary: delete payment method
+      description: delete payment method
+      responses:
+        '500':
+          description: internal server error in delete payment method
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paymentMethodHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for delete payment method
+                data:
+        '200':
+          description: success delete payment method
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paymentMethodHttpResponse'
+              example:
+                code: 200
+                message: success delete payment method
+                data:
+                  deleted_at: 2022-02-15T02:18:32.857Z
 
 
 
@@ -1159,6 +1492,34 @@ components:
           type: string
         data:
           $ref: '#/components/schemas/productTypeDataResponse'
+    paymentMethodRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    paymentMethodDataResponse:
+      type: object
+      properties:
+        id :
+          type: integer
+          format: uint
+        created_at :
+          type: string
+          format: date-time
+        updated_at :
+          type: string
+          format : date-time
+        name:
+          type: string
+    paymentMethodHttpResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/paymentMethodDataResponse'
 
 
 
