@@ -33,30 +33,211 @@ paths:
         content:
           application/json :
             schema: 
-              $ref: '#/components/schemas/login'
+              $ref: '#/components/schemas/loginRequest'
             example:
               email: anonim123
               password: anonim123
       responses:
-        '200':
-          description: success login
+        '400':
+          description: bad request in login
           content:
-            application/json :
-              schema :
-                type: object
-                properties:
-                  code :
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                example:
-                  code: 200
-                  message: "success login"
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loginHttpResponse'
+              example:
+                code: 400
+                message: error in request for login
+                data: null
+        '500':
+          description: internal server error in login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loginHttpResponse'
+              example:
+                code: 500
+                message: error in call database for login
+                data: null
+        '200':
+          description: sucess in login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loginHttpResponse'
+              example:
+                code: 200
+                message: sucess login
+                data: 
+                  token: secret
+  /user:
+    post:
+      tags:
+        - user
+      summary: registrasion for user
+      description: create user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userRequest'
+            example:
+              name: anonim
+              email: anonim@gmail.com
+              password: anonim
+      responses:
+        '400':
+          description: bad request in create user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userHttpResponse'
+              example:
+                code: 400
+                message: error in request for create user
+                data:
+        '500':
+          description: internal server error in create user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userHttpResponse'
+              example:
+                code: 500
+                message: error in call database for create user
+                data:
+        '200':
+          description: success create user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userHttpResponse'
+              example:
+                code: 200
+                message: success create user
+                data:
+                  id: 1
+                  created_at: 2022-02-15T02:18:32.857Z
+                  updated_at: 2022-02-15T02:18:32.857Z
+                  name: anonim
+                  email: anonim@gmail.com
+  
+  /user/me:
+    get:
+      tags:
+        - user
+      summary: get user detail
+      description: user can get detail by parsing id with jwt
+      responses:
+        '500':
+          description: internal server error in get user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userHttpResponse'
+              example:
+                code: 500
+                message: error in call database for get user
+                data:
+        '200':
+          description: success get user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userHttpResponse'
+              example:
+                code: 200
+                message: success get user
+                data:
+                  id: 1
+                  created_at: 2022-02-15T02:18:32.857Z
+                  updated_at: 2022-02-15T02:18:32.857Z
+                  name: anonim
+                  email: anonim@gmail.com
+    put:
+      tags:
+        - user
+      summary: update user
+      description: user can update by parsing id with jwt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userRequest'
+            example:
+              name: anonim123
+              email: anonim123@gmail.com
+              password: anonim123
+      responses:
+        '400':
+          description: bad request in update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userHttpResponse'
+              example:
+                code: 400
+                message: error in request for update user
+                data:
+        '500':
+          description: internal server error in update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userHttpResponse'
+              example:
+                code: 500
+                message: error in call database for update user
+                data:
+        '200':
+          description: success update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userHttpResponse'
+              example:
+                code: 200
+                message: success update user
+                data:
+                  id: 1
+                  created_at: 2022-02-15T02:18:32.857Z
+                  updated_at: 2022-02-15T02:18:32.857Z
+                  name: anonim123
+                  email: anonim123@gmail.com
+    delete:
+      tags:
+        - user
+      summary: delete user
+      description: user can get detail by parsing id with jwt
+      responses:
+        '500':
+          description: internal server error in delete user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userHttpResponse'
+              example:
+                code: 500
+                message: error in call database for delete user
+                data:
+        '200':
+          description: success delete user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userHttpResponse'
+              example:
+                code: 200
+                message: success delete user
+                data:
+                  deleted_at: 2022-02-15T02:18:32.857Z
+
+
+
 components:
   schemas:
-    login:
+    loginRequest:
       type: object
       properties :
         email :
@@ -65,31 +246,30 @@ components:
         password : 
           type: string
           format: string
-    User :
-      type : object
+    loginDataResponse:
+      type: object
       properties:
-        id :
+        token:
+          type: string
+    loginHttpResponse:
+      type: object
+      properties:
+        code:
           type: integer
-          format: uint
-        created_at :
+        message:
           type: string
-          format: date-time
-        updated_at :
+        data:
+          $ref: '#/components/schemas/loginDataResponse'
+    userRequest:
+      type: object
+      properties:
+        name:
           type: string
-          format : date-time
-        deleted_at :
-          type : string
-          format: date-time
-        name : 
+        email:
           type: string
-          format: string
-        email :
+        password:
           type: string
-          format: string
-        password : 
-          type: string
-          format: string
-    product :
+    userDataResponse:
       type: object
       properties:
         id :
@@ -101,9 +281,46 @@ components:
         updated_at :
           type: string
           format : date-time
-        deleted_at :
-          type : string
+        name : 
+          type: string
+          format: string
+        email :
+          type: string
+          format: string
+    userHttpResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/userDataResponse'
+    productRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        product_type:
+          type: integer
+        price:
+          type: integer
+        qty :
+          type: integer
+        description :
+          type: string
+    productDataResponse:
+      type: object
+      properties:
+        id :
+          type: integer
+          format: uint
+        created_at :
+          type: string
           format: date-time
+        updated_at :
+          type: string
+          format : date-time
         name : 
           type: string
           format: string
@@ -116,5 +333,8 @@ components:
         description :
           type: string
           format: string
-  responses:
-  
+    productHttp
+
+
+
+
