@@ -19,8 +19,12 @@ tags:
     description: login
   - name: user
     description: user
-  - name: product
-    description: product
+  - name: all product
+    description: access to all product
+  - name: my product
+    description: access to my product
+  - name: cart
+    description: cart for transaction
 paths:
   /login:
     post:
@@ -56,7 +60,7 @@ paths:
                 $ref: '#/components/schemas/loginHttpResponse'
               example:
                 code: 500
-                message: error in call database for login
+                message: error internal server error for login
                 data: null
         '200':
           description: sucess in login
@@ -104,7 +108,7 @@ paths:
                 $ref: '#/components/schemas/userHttpResponse'
               example:
                 code: 500
-                message: error in call database for create user
+                message: error internal server error for create user
                 data:
         '200':
           description: success create user
@@ -121,7 +125,6 @@ paths:
                   updated_at: 2022-02-15T02:18:32.857Z
                   name: anonim
                   email: anonim@gmail.com
-  
   /user/me:
     get:
       tags:
@@ -137,7 +140,7 @@ paths:
                 $ref: '#/components/schemas/userHttpResponse'
               example:
                 code: 500
-                message: error in call database for get user
+                message: error internal server error for get user
                 data:
         '200':
           description: success get user
@@ -188,7 +191,7 @@ paths:
                 $ref: '#/components/schemas/userHttpResponse'
               example:
                 code: 500
-                message: error in call database for update user
+                message: error internal server error for update user
                 data:
         '200':
           description: success update user
@@ -219,7 +222,7 @@ paths:
                 $ref: '#/components/schemas/userHttpResponse'
               example:
                 code: 500
-                message: error in call database for delete user
+                message: error internal server error for delete user
                 data:
         '200':
           description: success delete user
@@ -232,7 +235,325 @@ paths:
                 message: success delete user
                 data:
                   deleted_at: 2022-02-15T02:18:32.857Z
-
+  /product/all:
+    get:
+      tags:
+        - all product
+      summary: get all products
+      description: user can wacth all products
+      responses:
+        '500':
+          description: internal server error in get all product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for get all product
+                data:
+        '200':
+          description: success get all
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success get all products
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/productDataResponse'
+                    example:
+                      - id: 1
+                        created_at: 2022-02-15T02:18:32.857Z
+                        updated_at: 2022-02-15T02:18:32.857Z
+                        name: anonim
+                        product_type: 1
+                        price: 1000
+                        qty: 10
+                        description: anonim description
+                      - id: 2
+                        created_at: 2022-02-15T02:18:32.857Z
+                        updated_at: 2022-02-15T02:18:32.857Z
+                        name: anonim2
+                        product_type: 2
+                        price: 2000
+                        qty: 20
+                        description: anonim description 2
+  /product/all/{id}:
+    get:
+      tags:
+        - all product
+      summary: get single product by id
+      description: wacth single product by parsing by id
+      responses:
+        '500':
+          description: internal server error in get single product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for get single product
+                data:
+        '200':
+          description: success get single product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 200
+                message: success get single product
+                data:
+                  id: 1
+                  created_at: 2022-02-15T02:18:32.857Z
+                  updated_at: 2022-02-15T02:18:32.857Z
+                  name: anonim
+                  product_type: 1
+                  price: 1000
+                  qty: 10
+                  description: anonim description
+  /product/me:
+    post:
+      tags:
+        - my product
+      summary: create product
+      description: user can create product and parsing user_id by jwt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productRequest'
+            example:
+              name: anonim
+              product_type: 1
+              price: 1000
+              qty: 10
+              description: anonim description
+      responses:
+        '400':
+          description: bad request in create product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 400
+                message: error in request for create product
+                data:
+        '500':
+          description: internal server error in create product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for create user
+                data:
+        '200':
+          description: success create product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 200
+                message: success create user
+                data: 
+                  id: 1
+                  created_at: 2022-02-15T02:18:32.857Z
+                  updated_at: 2022-02-15T02:18:32.857Z
+                  name: anonim
+                  product_type: 1
+                  price: 1000
+                  qty: 10
+                  description: anonim description
+    get:
+      tags:
+        - my product
+      summary: get all user's products 
+      description: user can wacth their products and parsing user_id by jwt
+      responses:
+        '500':
+          description: internal server error in get all user's products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for get user's products
+                data:
+        '200':
+          description: success get all user's products
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success get all user's products
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/productDataResponse'
+                    example:
+                      - id: 1
+                        created_at: 2022-02-15T02:18:32.857Z
+                        updated_at: 2022-02-15T02:18:32.857Z
+                        name: anonim
+                        product_type: 1
+                        price: 1000
+                        qty: 10
+                        description: anonim description
+                      - id: 2
+                        created_at: 2022-02-15T02:18:32.857Z
+                        updated_at: 2022-02-15T02:18:32.857Z
+                        name: anonim2
+                        product_type: 2
+                        price: 2000
+                        qty: 20
+                        description: anonim description 2
+  /product/me/{id}:
+    get:
+      tags:
+        - my product
+      summary: get single user's product by id
+      description: user can wacth single user's product and parsing user_id by jwt
+      responses:
+        '500':
+          description: internal server error in get single user's product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for get single user's product
+                data:
+        '200':
+          description: success get single user's product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 200
+                message: success get single user's product
+                data:
+                  id: 1
+                  created_at: 2022-02-15T02:18:32.857Z
+                  updated_at: 2022-02-15T02:18:32.857Z
+                  name: anonim
+                  product_type: 1
+                  price: 1000
+                  qty: 10
+                  description: anonim description
+    put:
+      tags:
+        - my product
+      summary: update user's product
+      description: user can update their product with pasrsing by id and parsing user_id by jwt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productRequest'
+            example:
+              name: anonim update
+              product_type: 1
+              price: 1000
+              qty: 10
+              description: anonim description update
+      responses:
+        '400':
+          description: bad request in update product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 400
+                message: error in request for update product
+                data:
+        '500':
+          description: internal server in update product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for update user
+                data:
+        '200':
+          description: success update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 200
+                message: success update product
+                data:
+                  id: 1
+                  created_at: 2022-02-15T02:18:32.857Z
+                  updated_at: 2022-02-15T02:18:32.857Z
+                  name: anonim update
+                  product_type: 1
+                  price: 1000
+                  qty: 10
+                  description: anonim description update
+    delete:
+      tags:
+        - my product
+      summary: delete product by id
+      description: user can delete their product and parsing user_id by jwt
+      responses:
+        '500':
+          description: internal server error in delete product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for delete product
+                data:
+        '200':
+          description: success delete product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 200
+                message: success delete product
+                data:
+                  deleted_at: 2022-02-15T02:18:32.857Z
+  /cart/me:
+    post:
+      tags:
+        - cart
+      summary: create cart
+      description: user can add product to cart
+      requestBody:
+        required: true
 
 
 components:
@@ -324,6 +645,8 @@ components:
         name : 
           type: string
           format: string
+        product_type:
+          type: integer
         price :
           type: integer
           format: int
@@ -333,7 +656,51 @@ components:
         description :
           type: string
           format: string
-    productHttp
+    productHttpResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/productDataResponse'
+    cartRequest:
+      type: object
+      properties:
+        product_id:
+          type: integer
+        qty:
+          type: integer
+    cartDataResponse:
+      type: object
+      properties:
+        id :
+          type: integer
+          format: uint
+        created_at :
+          type: string
+          format: date-time
+        updated_at :
+          type: string
+          format : date-time
+        product_name:
+          type: string
+        qty:
+          type: string
+        price:
+          type: integer
+    cartHttpResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/cartDataResponse'
+
+
 
 
 
