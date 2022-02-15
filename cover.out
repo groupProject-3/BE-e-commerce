@@ -1,0 +1,17 @@
+mode: set
+be/lib/database/user/user.go:15.31,19.2 1 1
+be/lib/database/user/user.go:21.65,22.50 1 1
+be/lib/database/user/user.go:25.2,25.18 1 1
+be/lib/database/user/user.go:22.50,24.3 1 1
+be/lib/database/user/user.go:28.56,33.27 3 1
+be/lib/database/user/user.go:36.2,36.18 1 1
+be/lib/database/user/user.go:33.27,35.3 1 1
+be/lib/database/user/user.go:39.84,45.27 3 1
+be/lib/database/user/user.go:49.2,49.18 1 1
+be/lib/database/user/user.go:45.27,47.3 1 1
+be/lib/database/user/user.go:52.62,56.27 3 1
+be/lib/database/user/user.go:60.2,60.28 1 1
+be/lib/database/user/user.go:56.27,58.3 1 1
+be/lib/database/user/user.go:63.57,67.27 3 1
+be/lib/database/user/user.go:71.2,71.25 1 1
+be/lib/database/user/user.go:67.27,69.3 1 1

@@ -1,7 +1,6 @@
 package user
 
 import (
-	"be/delivery/controllers/product"
 	"time"
 )
 
@@ -10,7 +9,12 @@ type UserResponse struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 
-	Name     string                    `json:"name"`
-	Email    string                    `json:"email"`
-	Products []product.ProductResponse `json:"products"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
+
+type UserRequest struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
