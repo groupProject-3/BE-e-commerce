@@ -16,7 +16,7 @@ func TestLogin(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.User{})
-	db.AutoMigrate(&models.User{})
+	db.Migrator().CreateTable(&models.User{})
 
 	t.Run("success run login", func(t *testing.T) {
 		mockUser := models.User{Name: "anonim123", Email: "anonim@123", Password: "anonim123"}

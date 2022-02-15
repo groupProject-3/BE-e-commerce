@@ -37,7 +37,7 @@ be/lib/database/user/user.go:28.56,33.27 3 1
 be/lib/database/user/user.go:36.2,36.18 1 1
 be/lib/database/user/user.go:33.27,35.3 1 1
 be/lib/database/user/user.go:39.84,45.27 3 1
-be/lib/database/user/user.go:49.2,49.18 1 1
+be/lib/database/user/user.go:49.2,49.18 1 0
 be/lib/database/user/user.go:45.27,47.3 1 1
 be/lib/database/user/user.go:52.62,56.27 3 1
 be/lib/database/user/user.go:60.2,60.28 1 1

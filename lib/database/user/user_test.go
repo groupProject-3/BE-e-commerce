@@ -15,7 +15,7 @@ func TestCreate(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.User{})
-	db.AutoMigrate(&models.User{})
+	db.Migrator().CreateTable(&models.User{})
 
 	t.Run("success run create", func(t *testing.T) {
 		mockUser := models.User{Name: "anonim1", Email: "anonim1", Password: "anonim1"}
@@ -41,7 +41,7 @@ func TestGetById(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.User{})
-	db.AutoMigrate(&models.User{})
+	db.Migrator().CreateTable(&models.User{})
 
 	t.Run("success run GetById", func(t *testing.T) {
 		mocUser := models.User{Name: "anonim123", Email: "anonim@1", Password: "anonim1"}
@@ -65,7 +65,7 @@ func TestUpdateById(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.User{})
-	db.AutoMigrate(&models.User{})
+	db.Migrator().CreateTable(&models.User{})
 
 	t.Run("success run UpdateById", func(t *testing.T) {
 		mocUser := models.User{Name: "anonim123", Email: "anonim@1", Password: "anonim1"}
@@ -92,7 +92,7 @@ func TestDeleteById(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.User{})
-	db.AutoMigrate(&models.User{})
+	db.Migrator().CreateTable(&models.User{})
 
 	t.Run("success run DeleteById", func(t *testing.T) {
 		mocUser := models.User{Name: "anonim123", Email: "anonim@1", Password: "anonim1"}
@@ -117,7 +117,7 @@ func TestGetAll(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.User{})
-	db.AutoMigrate(&models.User{})
+	db.Migrator().CreateTable(&models.User{})
 
 	t.Run("success run GetAll", func(t *testing.T) {
 		mocUser := models.User{Name: "anonim123", Email: "anonim@1", Password: "anonim1"}

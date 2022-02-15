@@ -16,7 +16,7 @@ func TestCreate(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.ProductType{})
-	db.AutoMigrate(&models.ProductType{})
+	db.Migrator().CreateTable(&models.ProductType{})
 
 	t.Run("success run create", func(t *testing.T) {
 		mockPro := models.ProductType{Name: "anonim1"}
@@ -41,7 +41,7 @@ func TestUpdateById(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.ProductType{})
-	db.AutoMigrate(&models.ProductType{})
+	db.Migrator().CreateTable(&models.ProductType{})
 
 	t.Run("success run UpdateById", func(t *testing.T) {
 		mockPro1 := models.ProductType{Name: "anonim1"}
@@ -66,7 +66,7 @@ func TestDeleteById(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.ProductType{})
-	db.AutoMigrate(&models.ProductType{})
+	db.Migrator().CreateTable(&models.ProductType{})
 
 	t.Run("success run DeleteById", func(t *testing.T) {
 		mockPro1 := models.ProductType{Name: "anonim1"}
@@ -90,7 +90,7 @@ func TestGetAll(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.ProductType{})
-	db.AutoMigrate(&models.ProductType{})
+	db.Migrator().CreateTable(&models.ProductType{})
 
 	t.Run("success run GetAll", func(t *testing.T) {
 		mockPro1 := models.ProductType{Name: "anonim1"}
