@@ -76,3 +76,55 @@
                         price: 2000
                         qty: 20
                         description: anonim description 2
+
+post:
+      tags:
+        - cart
+      summary: create product in user's cart by id
+      description: user can create product qty by id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/cartRequest'
+            example:
+              product_id: 1
+              qty: 10
+      responses:
+        '400':
+          description: bad request in create cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cartHttpResponse'
+              example:
+                code: 400
+                message: error in request for create cart
+                data:
+        '500':
+          description: internal server error in create
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cartHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for create cart
+                data:
+        '200':
+          description: success create cart
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/cartHttpResponse'
+              example:
+                code: 200
+                message: success create cart
+                data:
+                  id: 1
+                  created_at: 2022-02-15T02:18:32.857Z
+                  updated_at: 2022-02-15T02:18:32.857Z
+                  product_name: anonim
+                  qty: 10
+                  price: 10000

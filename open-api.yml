@@ -25,6 +25,15 @@ tags:
     description: access to my product
   - name: cart
     description: cart for transaction
+  - name: order detail
+    description: cart which is fix
+  - name: order
+    description: checkout for the order
+  - name: payment method
+    description: payment method
+  - name: product type
+    description: product type
+
 paths:
   /login:
     post:
@@ -392,7 +401,7 @@ paths:
                 $ref: '#/components/schemas/productHttpResponse'
               example:
                 code: 500
-                message: error internal server error for get user's products
+                message: error internal server for get user's products
                 data:
         '200':
           description: success get all user's products
@@ -554,6 +563,363 @@ paths:
       description: user can add product to cart
       requestBody:
         required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/cartRequest'
+            example:
+              product_id: 1
+              qty: 10
+      responses:
+        '400':
+          description: bad request in create cart
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/cartHttpResponse'
+              example:
+                code: 400
+                message: error in request for create cart
+                data:
+        '500':
+          description: internal server error in create cart
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/cartHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for create cart
+                data:
+        '200':
+          description: success create cart
+          content:
+            application/json:
+                schema: 
+                  $ref: '#/components/schemas/cartHttpResponse'
+                example:
+                  code: 200
+                  message: success create cart
+                  data:
+                    id: 1
+                    created_at: 2022-02-15T02:18:32.857Z
+                    updated_at: 2022-02-15T02:18:32.857Z
+                    product_name: anonim
+                    qty: 10
+                    price: 10000
+    get:
+      tags:
+        - cart
+      summary: get all products in cart
+      description: user can wacth their products which is on cart
+      responses:
+        '500':
+          description: internal server in get all products in cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productHttpResponse'
+              example:
+                code: 500
+                message: error internal server for get products in cart
+                data:
+        '200':
+          description: success get all products in cart
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success get all products in cart
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/cartDataResponse'
+                    example:
+                    - id: 1
+                      created_at: 2022-02-15T02:18:32.857Z
+                      updated_at: 2022-02-15T02:18:32.857Z
+                      product_name: anonim 1
+                      qty: 10
+                      price: 1000
+                    - id: 2
+                      created_at: 2022-02-15T02:18:32.857Z
+                      updated_at: 2022-02-15T02:18:32.857Z
+                      product_name: anonim 1
+                      qty: 20
+                      price: 20000
+  /cart/me/{id}:
+    delete:
+      tags:
+        - cart
+      summary: delete product in user's cart by id
+      description: user delete product in user's cart by id
+      responses:
+        '500':
+          description: internal server in delete product in cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cartHttpResponse'
+              example:
+                code: 500
+                message: error internal server for delete product in cart
+                data:
+        '200':
+          description: success delete product
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/cartHttpResponse'
+              example:
+                code: 200
+                message: success delete product
+                data:
+                  deleted_at: 2022-02-15T02:18:32.857Z
+  /order/detail:
+    post:
+      tags:
+        - order detail
+      summary: create order detail
+      description: user can add fix product to order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orderDetailRequest'
+            example:
+              cart_id: 1
+              order_id: 1
+      responses:
+        '400':
+          description: bad request in create order detail
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/orderDetailHttpResponse'
+              example:
+                code: 400
+                message: error in request for create order detail
+                data:
+        '500':
+          description: internal server error in create order detail
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/orderDetailHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for create order detail
+                data:
+        '200':
+          description: success create order detail
+          content:
+            application/json:
+                schema: 
+                  $ref: '#/components/schemas/orderDetailHttpResponse'
+                example:
+                  code: 200
+                  message: success create cart
+                  data:
+                    id: 1
+                    created_at: 2022-02-15T02:18:32.857Z
+                    updated_at: 2022-02-15T02:18:32.857Z
+                    product_name: anonim
+                    qty: 10
+                    price: 10000
+    get:
+      tags:
+        - order detail
+      summary: get all fix products in order detail
+      description: user can wacth their fix products which is on order detail
+      responses:
+        '500':
+          description: internal server in get all fix products in order detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderDetailHttpResponse'
+              example:
+                code: 500
+                message: error internal server for get fix products in order detail
+                data:
+        '200':
+          description: success get all fix products in order detail
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success get all fix products in order detail
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/orderDetailHttpResponse'
+                    example:
+                    - id: 1
+                      created_at: 2022-02-15T02:18:32.857Z
+                      updated_at: 2022-02-15T02:18:32.857Z
+                      product_name: anonim 1
+                      qty: 10
+                      price: 1000
+                    - id: 2
+                      created_at: 2022-02-15T02:18:32.857Z
+                      updated_at: 2022-02-15T02:18:32.857Z
+                      product_name: anonim 1
+                      qty: 20
+                      price: 20000
+  /order/detail/{id}:
+    delete:
+      tags:
+        - order detail
+      summary: delete fix product in user's order detail by id
+      description: user delete fix product in user's order detail by id
+      responses:
+        '500':
+          description: internal server in delete product in order detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderDetailHttpResponse'
+              example:
+                code: 500
+                message: error internal server for delete product in order detail
+                data:
+        '200':
+          description: success delete product
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/orderDetailHttpResponse'
+              example:
+                code: 200
+                message: success delete product
+                data:
+                  deleted_at: 2022-02-15T02:18:32.857Z
+  /order/me:
+    post:
+      tags:
+        - order
+      summary: create order
+      description: create checkout for order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/orderRequest'
+            example:
+              user_id: 1
+              payment_method_id: 1
+      responses:
+        '400':
+          description: bad request in create order
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/orderHttpResponse'
+              example:
+                code: 400
+                message: error in request for create order
+                data:
+        '500':
+          description: internal server error in create order
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/orderHttpResponse'
+              example:
+                code: 500
+                message: error internal server error for create order
+                data:
+        '200':
+          description: success create order
+          content:
+            application/json:
+                schema: 
+                  $ref: '#/components/schemas/orderHttpResponse'
+                example:
+                  code: 200
+                  message: success create order
+                  data:
+                    id: 1
+                    created_at: 2022-02-15T02:18:32.857Z
+                    updated_at: 2022-02-15T02:18:32.857Z
+                    qty_total: 10
+                    price_total: 10000
+    get:
+      tags:
+        - order
+      summary: get order
+      description: user can wacth their  order
+      responses:
+        '500':
+          description: internal server in get order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderHttpResponse'
+              example:
+                code: 500
+                message: error internal server for get order
+                data:
+        '200':
+          description: success get order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderHttpResponse'
+              example:
+                code: 500
+                message: success get order
+                data:
+                  id: 1
+                  created_at: 2022-02-15T02:18:32.857Z
+                  updated_at: 2022-02-15T02:18:32.857Z
+                  qty_total: 10
+                  price_total: 10000
+    delete:
+      tags:
+        - order
+      summary: delete order
+      description: user delete order
+      responses:
+        '500':
+          description: internal server in delete order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderHttpResponse'
+              example:
+                code: 500
+                message: error internal server for delete order
+                data:
+        '200':
+          description: success delete order
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/orderHttpResponse'
+              example:
+                code: 200
+                message: success delete order
+                data:
+                  deleted_at: 2022-02-15T02:18:32.857Z
+
+
+
+
 
 
 components:
@@ -699,6 +1065,100 @@ components:
           type: string
         data:
           $ref: '#/components/schemas/cartDataResponse'
+    orderDetailRequest:
+      type: object
+      properties:
+        cart_id:
+          type: integer
+        order_id:
+          type: integer
+    orderDetailDataResponse:
+      type: object
+      properties:
+        id :
+          type: integer
+          format: uint
+        created_at :
+          type: string
+          format: date-time
+        updated_at :
+          type: string
+          format : date-time
+        product_name:
+          type: string
+        qty:
+          type: string
+        price:
+          type: integer
+    orderDetailHttpResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/orderDetailDataResponse'
+    orderRequest:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        payment_method_id:
+          type: integer
+    orderDataResponse:
+      type: object
+      properties:
+        id :
+          type: integer
+          format: uint
+        created_at :
+          type: string
+          format: date-time
+        updated_at :
+          type: string
+          format : date-time
+        qty_total:
+          type: integer
+        price_total:
+          type: integer
+    orderHttpResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/orderDataResponse'
+    productTypeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    productTypeDataResponse:
+      type: object
+      properties:
+        id :
+          type: integer
+          format: uint
+        created_at :
+          type: string
+          format: date-time
+        updated_at :
+          type: string
+          format : date-time
+        name:
+          type: string
+    productTypeHttpResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/productTypeDataResponse'
 
 
 
