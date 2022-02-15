@@ -1,4 +1,21 @@
 mode: set
+be/lib/database/productType/productType.go:15.38,19.2 1 0
+be/lib/database/productType/productType.go:21.89,22.53 1 0
+be/lib/database/productType/productType.go:26.2,26.21 1 0
+be/lib/database/productType/productType.go:22.53,24.3 1 0
+be/lib/database/productType/productType.go:29.111,35.27 3 0
+be/lib/database/productType/productType.go:39.2,39.17 1 0
+be/lib/database/productType/productType.go:35.27,37.3 1 0
+be/lib/database/productType/productType.go:42.69,48.27 3 0
+be/lib/database/productType/productType.go:52.2,52.27 1 0
+be/lib/database/productType/productType.go:48.27,50.3 1 0
+be/lib/database/productType/productType.go:55.78,60.27 3 0
+be/lib/database/productType/productType.go:64.2,64.24 1 0
+be/lib/database/productType/productType.go:60.27,62.3 1 0
+be/lib/database/auth/auth.go:14.31,18.2 1 1
+be/lib/database/auth/auth.go:20.72,22.144 2 1
+be/lib/database/auth/auth.go:26.2,26.18 1 1
+be/lib/database/auth/auth.go:22.144,24.3 1 1
 be/lib/database/user/user.go:15.31,19.2 1 1
 be/lib/database/user/user.go:21.65,22.50 1 1
 be/lib/database/user/user.go:25.2,25.18 1 1
