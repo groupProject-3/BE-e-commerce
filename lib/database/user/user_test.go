@@ -14,7 +14,7 @@ func TestCreate(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
-	db.Migrator().DropTable(&models.Cart{}, &models.Order{}, &models.OrderDetail{}, &models.PaymentMethod{}, &models.Product{}, &models.ProductType{}, &models.User{})
+	db.Migrator().DropTable(&models.User{})
 	db.AutoMigrate(&models.User{})
 
 	t.Run("success run create", func(t *testing.T) {
@@ -40,7 +40,7 @@ func TestGetById(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
-	db.Migrator().DropTable(&models.Cart{}, &models.Order{}, &models.OrderDetail{}, &models.PaymentMethod{}, &models.Product{}, &models.ProductType{}, &models.User{})
+	db.Migrator().DropTable(&models.User{})
 	db.AutoMigrate(&models.User{})
 
 	t.Run("success run GetById", func(t *testing.T) {
@@ -64,7 +64,7 @@ func TestUpdateById(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
-	db.Migrator().DropTable(&models.Cart{}, &models.Order{}, &models.OrderDetail{}, &models.PaymentMethod{}, &models.Product{}, &models.ProductType{}, &models.User{})
+	db.Migrator().DropTable(&models.User{})
 	db.AutoMigrate(&models.User{})
 
 	t.Run("success run UpdateById", func(t *testing.T) {
@@ -91,7 +91,7 @@ func TestDeleteById(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
-	db.Migrator().DropTable(&models.Cart{}, &models.Order{}, &models.OrderDetail{}, &models.PaymentMethod{}, &models.Product{}, &models.ProductType{}, &models.User{})
+	db.Migrator().DropTable(&models.User{})
 	db.AutoMigrate(&models.User{})
 
 	t.Run("success run DeleteById", func(t *testing.T) {
@@ -116,7 +116,7 @@ func TestGetAll(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
-	db.Migrator().DropTable(&models.Cart{}, &models.Order{}, &models.OrderDetail{}, &models.PaymentMethod{}, &models.Product{}, &models.ProductType{}, &models.User{})
+	db.Migrator().DropTable(&models.User{})
 	db.AutoMigrate(&models.User{})
 
 	t.Run("success run GetAll", func(t *testing.T) {

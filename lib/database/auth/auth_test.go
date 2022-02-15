@@ -15,7 +15,7 @@ func TestLogin(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
-	db.Migrator().DropTable(&models.Cart{}, &models.Order{}, &models.OrderDetail{}, &models.PaymentMethod{}, &models.Product{}, &models.ProductType{}, &models.User{})
+	db.Migrator().DropTable(&models.User{})
 	db.AutoMigrate(&models.User{})
 
 	t.Run("success run login", func(t *testing.T) {
