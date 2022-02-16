@@ -40,7 +40,7 @@ func (cd *CartDb) DeleteById(id uint, user_id uint) (gorm.DeletedAt, error) {
 
 func (cd *CartDb) UpdateById(id uint, user_id uint, upCart cart.CartRequest) (models.Cart, error) {
 
-	if _, err := cd.DeleteById(id, user_id) ; err != nil{
+	if _, err := cd.DeleteById(id, user_id); err != nil {
 		return models.Cart{}, err
 	}
 	cart := models.Cart{Product_id: upCart.Product_id, Qty: upCart.Qty, Status: upCart.Status}
@@ -55,10 +55,10 @@ func (cd *CartDb) UpdateById(id uint, user_id uint, upCart cart.CartRequest) (mo
 func (cd *CartDb) GetAll(user_id uint) ([]cart.CartResponse, error) {
 	cartRespArr := []cart.CartResponse{}
 
-	res := cd.db.Model(&models.Cart{}).Where("user_id = ?", user_id).Select("carts.id as ID, carts.created_at as CreatedAt, carts.updated_at as UpdatedAt, carts.qty as Qty, products.name as Product_name").Joins("inner join products on products.id = carts.product_id").Find(&cartRespArr)
+	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ?", user_id).Select("carts.id as ID, carts.created_at as CreatedAt, carts.updated_at as UpdatedAt, carts.qty as Qty, products.name as Product_name").Joins("inner join products on products.id = carts.product_id").Find(&cartRespArr)
 
-	if res.Error != nil || res.RowsAffected == 0{
-		return nil, res.Error
+	if res.Error != nil || res.RowsAffected == 0 {
+		return nil, errors.New(gorm.ErrRecordNotFound.Error())
 	}
 
 	return cartRespArr, nil
