@@ -1,18 +1,17 @@
 package order
 
 import (
-	// "be/lib/database/orderDetail"
 	"be/delivery/controllers/order"
 	"be/delivery/controllers/orderDetail"
 	"be/models"
 	"errors"
 
+	"github.com/labstack/gommon/log"
 	"gorm.io/gorm"
 )
 
 type OrderDb struct {
 	db *gorm.DB
-	// orderDetai *orderDetail
 }
 
 func New(db *gorm.DB) *OrderDb {
@@ -25,16 +24,26 @@ func (od *OrderDb) Create(user_id uint, newOrder models.Order) (models.Order, er
 	newOrder.User_id = user_id
 
 	sumQty := od.db.Model(&models.OrderDetail{}).Where("order_id = ?", newOrder.ID).Select("sum(qty)").Row().Scan(&newOrder.Total_qty)
-	if sumQty.Error() != "" {
-		return models.Order{}, errors.New(sumQty.Error())
-	}
+	// log.Info(sumQty.Err().Error())
+	// if sumQty.Err() != nil {
+	// 	newOrder.Total_qty = 0
+	// } else {
+	// 	sumQty.Scan(&newOrder.Total_qty)
+	// }
+	log.Info(sumQty)
+
 	sumPrice := od.db.Model(&models.OrderDetail{}).Where("order_id = ?", newOrder.ID).Select("sum(qty)").Row().Scan(&newOrder.Total_price)
-	if sumPrice.Error() != "" {
-		return models.Order{}, errors.New(sumPrice.Error())
-	}
+	// if sumPrice.Err() != nil {
+	// 	newOrder.Total_price = 0
+	// } else {
+	// 	sumPrice.Scan(&newOrder.Total_price)
+	// }
+	log.Info(sumPrice)
+
 	if err := od.db.Create(&newOrder).Error; err != nil {
 		return models.Order{}, err
 	}
+	log.Info(newOrder)
 	return newOrder, nil
 }
 

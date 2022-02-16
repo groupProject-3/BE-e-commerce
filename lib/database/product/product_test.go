@@ -41,7 +41,7 @@ func TestCreate(t *testing.T) {
 	}
 
 	t.Run("fail run create", func(t *testing.T) {
-		mockProd2 := models.Product{Model: gorm.Model{ID: 1}, Product_type_id: 1, Name: "anonim1 product", Price: 1000, Qty: 10, Description: "anonim1 Description"}
+		mockProd2 := models.Product{Model: gorm.Model{ID: 1}, Product_type_id: 10, Name: "anonim1 product", Price: 1000, Qty: 10, Description: "anonim1 Description"}
 		_, err := repo.Create(1, mockProd2)
 		assert.NotNil(t, err)
 	})

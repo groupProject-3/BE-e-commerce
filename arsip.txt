@@ -29,3 +29,8 @@ taskRespArr := []response.TaskResponse{}
 		return userResp, resPro.Error
 	}
 	userResp.Projects = project
+
+	mockPm1 := models.PaymentMethod{Name: "anonim1"}
+		if _, err := paymentmethod.New(db).Create(mockPm1); err != nil {
+			t.Fatal()
+		}
