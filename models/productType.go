@@ -1,7 +1,7 @@
 package models
 
 import (
-	producttype "be/delivery/controllers/productType"
+	prodType "be/delivery/controllers/prodType"
 
 	"gorm.io/gorm"
 )
@@ -13,8 +13,8 @@ type ProductType struct {
 	Products []Product `gorm:"foreignKey:Product_type_id"` 
 }
 
-func (p *ProductType) ToProductTypeResponse() producttype.ProductTypeResponse{
-	return producttype.ProductTypeResponse{
+func (p *ProductType) ToProductTypeResponse() prodType.ProductTypeResponse{
+	return prodType.ProductTypeResponse{
 		ID: p.ID,
 		CreatedAt: p.CreatedAt,
 		UpdatedAt: p.UpdatedAt,

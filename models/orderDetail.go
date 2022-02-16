@@ -1,6 +1,10 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"be/delivery/controllers/orderDetail"
+
+	"gorm.io/gorm"
+)
 
 type OrderDetail struct {
 	gorm.Model
@@ -8,4 +12,17 @@ type OrderDetail struct {
 	Order_id uint
 	Qty      uint
 	Price    uint
+}
+
+func (o *OrderDetail) ToOrderDetailResponse() orderDetail.OrderDetailResponse {
+	return orderDetail.OrderDetailResponse{
+		ID: o.ID,
+		CreatedAt: o.CreatedAt,
+		UpdatedAt: o.UpdatedAt,
+
+		Cart_id:  o.Cart_id,
+		Order_id: o.Order_id,
+		Qty:      o.Qty,
+		Price:    o.Price,
+	}
 }

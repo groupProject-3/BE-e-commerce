@@ -1,8 +1,8 @@
-package producttype
+package prodType
 
 import (
 	"be/configs"
-	producttype "be/delivery/controllers/productType"
+	prodType "be/delivery/controllers/prodType"
 	"be/models"
 	"be/utils"
 	"testing"
@@ -48,14 +48,14 @@ func TestUpdateById(t *testing.T) {
 		if _, err := repo.Create(mockPro1); err != nil {
 			t.Fatal()
 		}
-		upPro := producttype.ProductTypeRequest{Name: "anonim2"}
+		upPro := prodType.ProductTypeRequest{Name: "anonim2"}
 		res, err := repo.UpdateById(1, upPro)
 		assert.Nil(t, err)
 		assert.Equal(t, "anonim2", res.Name)
 	})
 
 	t.Run("fail run UpdateById", func(t *testing.T) {
-		upPro := producttype.ProductTypeRequest{Name: "anonim2"}
+		upPro := prodType.ProductTypeRequest{Name: "anonim2"}
 		_, err := repo.UpdateById(10, upPro)
 		assert.NotNil(t, err)
 	})
@@ -104,7 +104,7 @@ func TestGetAll(t *testing.T) {
 
 	t.Run("fail run GetAll", func(t *testing.T) {
 		if _, err := repo.DeleteById(1); err != nil {
-			t.Fatal()
+			t.Log()
 		}
 		_, err := repo.GetAll()
 		assert.NotNil(t, err)
