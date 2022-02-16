@@ -10,3 +10,22 @@ taskRespArr := []response.TaskResponse{}
 		return nil, errors.New(gorm.ErrRecordNotFound.Error())
 	}
 	return taskRespArr, nil
+
+
+  userResp := response.UserResponse{}
+
+	res := ud.db.Model(&user.User{}).Where("id = ?", id).First(&userResp)
+
+	if res.RowsAffected == 0 {
+		return response.UserResponse{}, res.Error
+	}
+
+
+  project := []proResp.ProResponse{}
+
+	resPro := ud.db.Model(&user.User{}).Where("users.id = ?", id).Select("projects.id as Id, projects.created_at as Created_at, projects.updated_at as Updated_at, projects.name as Name").Joins("inner join projects on projects.user_id = users.id").Find(&project)
+
+	if resPro.Error != nil {
+		return userResp, resPro.Error
+	}
+	userResp.Projects = project
