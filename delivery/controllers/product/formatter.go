@@ -1,6 +1,8 @@
 package product
 
-import "time"
+import (
+	"time"
+)
 
 type ProductRequest struct {
 	Name            string `json:"name"`
