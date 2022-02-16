@@ -38,10 +38,10 @@ func (pd *ProductDb) UpdateById(id int, user_id uint, upPro product.ProductReque
 	return pro, nil
 }
 
-func (pd *ProductDb) DeleteById(id int, user_id uint) (gorm.DeletedAt, error) {
+func (pd *ProductDb) DeleteById(id uint, user_id uint) (gorm.DeletedAt, error) {
 	pro := models.Product{}
 
-	res := pd.db.Model(&pro).Where("id = ? AND user_id = ?", id, user_id).Delete(&pro)
+	res := pd.db.Model(&models.Product{}).Where("id = ? AND user_id = ?", id, user_id).Delete(&pro)
 
 	if res.RowsAffected == 0 {
 		return pro.DeletedAt, errors.New(gorm.ErrRecordNotFound.Error())
