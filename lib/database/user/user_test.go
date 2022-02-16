@@ -2,7 +2,7 @@ package user
 
 import (
 	"be/configs"
-	"be/delivery/controllers/user"
+	"be/delivery/templates"
 	"be/models"
 	"be/utils"
 	"testing"
@@ -74,14 +74,14 @@ func TestUpdateById(t *testing.T) {
 			t.Fatal()
 		}
 
-		upUser := user.UserRequest{Name: "anonim2", Email: "anonim2", Password: "anonim2"}
+		upUser := templates.UserRequest{Name: "anonim2", Email: "anonim2", Password: "anonim2"}
 		res, err := repo.UpdateById(1, upUser)
 		assert.Nil(t, err)
 		assert.NotNil(t, res)
 	})
 
 	t.Run("fail run UpdateById", func(t *testing.T) {
-		upUser := user.UserRequest{Name: "anonim2", Email: "anonim2", Password: "anonim2"}
+		upUser := templates.UserRequest{Name: "anonim2", Email: "anonim2", Password: "anonim2"}
 		_, err := repo.UpdateById(10, upUser)
 		assert.NotNil(t, err)
 	})

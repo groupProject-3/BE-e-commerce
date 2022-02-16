@@ -1,7 +1,7 @@
 package cart
 
 import (
-	"be/delivery/controllers/cart"
+	"be/delivery/templates"
 	"be/models"
 	"errors"
 
@@ -38,7 +38,7 @@ func (cd *CartDb) DeleteById(id uint, user_id uint) (gorm.DeletedAt, error) {
 	return cart.DeletedAt, nil
 }
 
-func (cd *CartDb) UpdateById(id uint, user_id uint, upCart cart.CartRequest) (models.Cart, error) {
+func (cd *CartDb) UpdateById(id uint, user_id uint, upCart templates.CartRequest) (models.Cart, error) {
 
 	if _, err := cd.DeleteById(id, user_id); err != nil {
 		return models.Cart{}, err
@@ -52,8 +52,8 @@ func (cd *CartDb) UpdateById(id uint, user_id uint, upCart cart.CartRequest) (mo
 	return res, nil
 }
 
-func (cd *CartDb) GetAll(user_id uint) ([]cart.CartResponse, error) {
-	cartRespArr := []cart.CartResponse{}
+func (cd *CartDb) GetAll(user_id uint) ([]templates.CartResponse, error) {
+	cartRespArr := []templates.CartResponse{}
 
 	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ?", user_id).Select("carts.id as ID, carts.created_at as CreatedAt, carts.updated_at as UpdatedAt, carts.qty as Qty, products.name as Product_name").Joins("inner join products on products.id = carts.product_id").Find(&cartRespArr)
 

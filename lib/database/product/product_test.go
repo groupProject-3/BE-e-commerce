@@ -2,7 +2,7 @@ package product
 
 import (
 	"be/configs"
-	"be/delivery/controllers/product"
+	"be/delivery/templates"
 	prodType "be/lib/database/prodType"
 	"be/lib/database/user"
 	"be/models"
@@ -67,7 +67,7 @@ func TestUpdateById(t *testing.T) {
 		if _, err := repo.Create(1, mockProd1); err != nil {
 			t.Fatal()
 		}
-		mockProd := product.ProductRequest{Product_type_id: 1, Name: "anonim2 product", Price: 1000, Qty: 10, Description: "anonim2 Description"}
+		mockProd := templates.ProductRequest{Product_type_id: 1, Name: "anonim2 product", Price: 1000, Qty: 10, Description: "anonim2 Description"}
 
 		res, err := repo.UpdateById(1, 1, mockProd)
 		assert.Nil(t, err)
@@ -75,7 +75,7 @@ func TestUpdateById(t *testing.T) {
 	})
 
 	t.Run("fail run UpdateById", func(t *testing.T) {
-		mockProd := product.ProductRequest{Product_type_id: 1, Name: "anonim2 product", Price: 1000, Qty: 10, Description: "anonim2 Description"}
+		mockProd := templates.ProductRequest{Product_type_id: 1, Name: "anonim2 product", Price: 1000, Qty: 10, Description: "anonim2 Description"}
 
 		_, err := repo.UpdateById(10, 1, mockProd)
 		assert.NotNil(t, err)

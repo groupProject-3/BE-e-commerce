@@ -1,8 +1,6 @@
-package user
+package templates
 
-import (
-	"time"
-)
+import "time"
 
 type UserRequest struct {
 	Name     string `json:"name"`

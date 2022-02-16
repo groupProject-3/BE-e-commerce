@@ -1,12 +1,12 @@
-package prodType
+package templates
 
 import "time"
 
-type ProductTypeRequest struct {
+type PaymentMethodRequest struct {
 	Name string `json:"name"`
 }
 
-type ProductTypeResponse struct {
+type PaymentMethodResponse struct {
 	ID        uint      `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`

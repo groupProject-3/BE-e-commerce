@@ -2,7 +2,7 @@ package prodType
 
 import (
 	"be/configs"
-	prodType "be/delivery/controllers/prodType"
+	"be/delivery/templates"
 	"be/models"
 	"be/utils"
 	"testing"
@@ -48,14 +48,14 @@ func TestUpdateById(t *testing.T) {
 		if _, err := repo.Create(mockPro1); err != nil {
 			t.Fatal()
 		}
-		upPro := prodType.ProductTypeRequest{Name: "anonim2"}
+		upPro := templates.ProductTypeRequest{Name: "anonim2"}
 		res, err := repo.UpdateById(1, upPro)
 		assert.Nil(t, err)
 		assert.Equal(t, "anonim2", res.Name)
 	})
 
 	t.Run("fail run UpdateById", func(t *testing.T) {
-		upPro := prodType.ProductTypeRequest{Name: "anonim2"}
+		upPro := templates.ProductTypeRequest{Name: "anonim2"}
 		_, err := repo.UpdateById(10, upPro)
 		assert.NotNil(t, err)
 	})

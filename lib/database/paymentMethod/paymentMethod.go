@@ -1,7 +1,7 @@
 package paymentmethod
 
 import (
-	paymentmethod "be/delivery/controllers/paymentMethod"
+	"be/delivery/templates"
 	"be/models"
 	"errors"
 
@@ -25,7 +25,7 @@ func (pd *PaymentMethodDb) Create(pm models.PaymentMethod) (models.PaymentMethod
 	return pm, nil
 }
 
-func (pd *PaymentMethodDb) UpdateById(id int, upPay paymentmethod.PaymentMethodRequest) (models.PaymentMethod, error) {
+func (pd *PaymentMethodDb) UpdateById(id int, upPay templates.PaymentMethodRequest) (models.PaymentMethod, error) {
 	pm := models.PaymentMethod{}
 
 	res := pd.db.Model(&models.PaymentMethod{}).Where("id = ?", id).Updates(models.PaymentMethod{Name: upPay.Name}).First(&pm)
@@ -49,8 +49,8 @@ func (pd *PaymentMethodDb) DeleteById(id int) (gorm.DeletedAt, error) {
 	return pm.DeletedAt, nil
 }
 
-func (pd *PaymentMethodDb) GetAll() ([]paymentmethod.PaymentMethodResponse, error) {
-	pmRespArr := []paymentmethod.PaymentMethodResponse{}
+func (pd *PaymentMethodDb) GetAll() ([]templates.PaymentMethodResponse, error) {
+	pmRespArr := []templates.PaymentMethodResponse{}
 
 	res := pd.db.Model(&models.PaymentMethod{}).Find(&pmRespArr)
 

@@ -1,8 +1,7 @@
 package order
 
 import (
-	"be/delivery/controllers/order"
-	"be/delivery/controllers/orderDetail"
+	"be/delivery/templates"
 	"be/models"
 	"errors"
 
@@ -40,21 +39,21 @@ func (od *OrderDb) DeleteById(id uint, user_id uint) (gorm.DeletedAt, error) {
 	return order.DeletedAt, nil
 }
 
-func (od *OrderDb) GetById(id uint, user_id uint) (order.OrderResponse, error) {
-	orderResp := order.OrderResponse{}
+func (od *OrderDb) GetById(id uint, user_id uint) (templates.OrderResponse, error) {
+	orderResp := templates.OrderResponse{}
 
 	res := od.db.Model(&models.Order{}).Where("orders.id = ? AND orders.user_id = ?", id, user_id).First(&orderResp)
 
 	if res.RowsAffected == 0 {
-		return order.OrderResponse{}, res.Error
+		return templates.OrderResponse{}, res.Error
 	}
 
-	orderDetails := []orderDetail.OrderDetailResponse{}
+	orderDetails := []templates.OrderDetailResponse{}
 
 	resorderDetails := od.db.Model(&models.Order{}).Where("orders.id = ? AND orders.user_id = ?", id, user_id).Select("order_details.id as ID, order_details.created_at as CreatedAt, order_details.updated_at as UpdatedAt, order_details.cart_id as Cart_id, order_details.qty as Qty, order_details.price as Price").Joins("inner join order_details on order_details.order_id = orders.id").Find(&orderDetails)
 
 	if resorderDetails.Error != nil {
-		return order.OrderResponse{}, resorderDetails.Error
+		return templates.OrderResponse{}, resorderDetails.Error
 	}
 
 	orderResp.OrderDetails = orderDetails

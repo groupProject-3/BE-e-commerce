@@ -1,7 +1,7 @@
 package user
 
 import (
-	"be/delivery/controllers/user"
+	"be/delivery/templates"
 	"be/models"
 	"errors"
 
@@ -36,7 +36,7 @@ func (ud *UserDb) GetById(id int) (models.User, error) {
 	return user, nil
 }
 
-func (ud *UserDb) UpdateById(id int, userUp user.UserRequest) (models.User, error) {
+func (ud *UserDb) UpdateById(id int, userUp templates.UserRequest) (models.User, error) {
 
 	user := models.User{}
 
@@ -60,8 +60,8 @@ func (ud *UserDb) DeleteById(id int) (gorm.DeletedAt, error) {
 	return user.DeletedAt, nil
 }
 
-func (ud *UserDb) GetAll() ([]user.UserResponse, error) {
-	userRespArr := []user.UserResponse{}
+func (ud *UserDb) GetAll() ([]templates.UserResponse, error) {
+	userRespArr := []templates.UserResponse{}
 
 	res := ud.db.Model(&models.User{}).Find(&userRespArr)
 	if res.RowsAffected == 0 {

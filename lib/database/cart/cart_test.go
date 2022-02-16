@@ -2,7 +2,7 @@ package cart
 
 import (
 	"be/configs"
-	"be/delivery/controllers/cart"
+	"be/delivery/templates"
 	"be/lib/database/prodType"
 	"be/lib/database/product"
 	"be/lib/database/user"
@@ -112,7 +112,7 @@ func TestUpdateById(t *testing.T) {
 		if _, err := repo.Create(1, mockCart1); err != nil {
 			t.Fatal()
 		}
-		UpCart := cart.CartRequest{Product_id: 1, Qty: 20}
+		UpCart := templates.CartRequest{Product_id: 1, Qty: 20}
 		// log.Info(repo.GetAll(1))
 		res, err := repo.UpdateById(1, 1, UpCart)
 		assert.Nil(t, err)
@@ -121,7 +121,7 @@ func TestUpdateById(t *testing.T) {
 	})
 
 	t.Run("fail run UpdateById", func(t *testing.T) {
-		UpCart := cart.CartRequest{Product_id: 1, Qty: 20}
+		UpCart := templates.CartRequest{Product_id: 1, Qty: 20}
 		_, err := repo.UpdateById(10, 1, UpCart)
 		assert.NotNil(t, err)
 	})

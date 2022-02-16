@@ -2,7 +2,7 @@ package paymentmethod
 
 import (
 	"be/configs"
-	paymentmethod "be/delivery/controllers/paymentMethod"
+	"be/delivery/templates"
 	"be/models"
 	"be/utils"
 	"testing"
@@ -48,14 +48,14 @@ func TestUpdateById(t *testing.T) {
 		if _, err := repo.Create(mockPm1); err != nil {
 			t.Fatal()
 		}
-		upPm := paymentmethod.PaymentMethodRequest{Name: "anonim2"}
+		upPm := templates.PaymentMethodRequest{Name: "anonim2"}
 		res, err := repo.UpdateById(1, upPm)
 		assert.Nil(t, err)
 		assert.Equal(t, "anonim2", res.Name)
 	})
 
 	t.Run("fail run UpdateById", func(t *testing.T) {
-		upPm := paymentmethod.PaymentMethodRequest{Name: "anonim2"}
+		upPm := templates.PaymentMethodRequest{Name: "anonim2"}
 		_, err := repo.UpdateById(10, upPm)
 		assert.NotNil(t, err)
 	})

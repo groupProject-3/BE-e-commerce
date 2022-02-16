@@ -1,4 +1,4 @@
-package orderDetail
+package templates
 
 import "time"
 

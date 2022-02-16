@@ -1,4 +1,4 @@
-package auth
+package templates
 
 type Userlogin struct {
 	Email    string `json:"email"`

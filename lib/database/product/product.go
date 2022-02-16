@@ -1,7 +1,7 @@
 package product
 
 import (
-	"be/delivery/controllers/product"
+	"be/delivery/templates"
 	"be/models"
 	"errors"
 
@@ -26,7 +26,7 @@ func (pd *ProductDb) Create(user_id uint, newPro models.Product) (models.Product
 	return newPro, nil
 }
 
-func (pd *ProductDb) UpdateById(id int, user_id uint, upPro product.ProductRequest) (models.Product, error) {
+func (pd *ProductDb) UpdateById(id int, user_id uint, upPro templates.ProductRequest) (models.Product, error) {
 	pro := models.Product{}
 
 	res := pd.db.Model(&models.Product{}).Where("id = ? AND user_id = ?", id, user_id).Updates(models.Product{Name: upPro.Name, Product_type_id: upPro.Product_type_id, Qty: upPro.Qty, Price: upPro.Price, Description: upPro.Description}).First(&pro)
