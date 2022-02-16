@@ -26,10 +26,10 @@ func (od *OrderDetailDb) Create(newOrderDetail models.OrderDetail) (models.Order
 	return newOrderDetail, nil
 }
 
-func (od *OrderDetailDb) DeleteById(cart_id uint, order_id uint) (gorm.DeletedAt, error) {
+func (od *OrderDetailDb) DeleteById(id uint) (gorm.DeletedAt, error) {
 	orderDetail := models.OrderDetail{}
 
-	res := od.db.Model(&models.OrderDetail{}).Where("cart_id = ? AND order_id = ?", cart_id, order_id).Delete(&orderDetail)
+	res := od.db.Model(&models.OrderDetail{}).Where("id = ?", id).Delete(&orderDetail)
 
 	if res.RowsAffected == 0 {
 		return orderDetail.DeletedAt, errors.New(gorm.ErrRecordNotFound.Error())
