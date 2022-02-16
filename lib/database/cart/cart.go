@@ -21,7 +21,7 @@ func New(db *gorm.DB) *CartDb {
 func (cd *CartDb) Create(user_id uint, newCart models.Cart) (models.Cart, error) {
 	newCart.User_id = user_id
 	if err := cd.db.Create(&newCart).Error; err != nil {
-		return newCart, err
+		return models.Cart{}, err
 	}
 	return newCart, nil
 }
