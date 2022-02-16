@@ -133,7 +133,7 @@ func TestGetAll(t *testing.T) {
 
 	t.Run("fail run GetAll", func(t *testing.T) {
 		if _, err := repo.DeleteById(1); err != nil {
-			t.Fatal()
+			t.Log()
 		}
 		_, err := repo.GetAll()
 		assert.NotNil(t, err)

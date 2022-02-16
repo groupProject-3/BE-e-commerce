@@ -1,7 +1,7 @@
-package producttype
+package prodType
 
 import (
-	producttype "be/delivery/controllers/productType"
+	prodType "be/delivery/controllers/prodType"
 	"be/models"
 	"errors"
 
@@ -26,7 +26,7 @@ func (pd *ProductTypeDb) Create(proType models.ProductType) (models.ProductType,
 	return proType, nil
 }
 
-func (pd *ProductTypeDb) UpdateById(id int, upPro producttype.ProductTypeRequest) (models.ProductType, error) {
+func (pd *ProductTypeDb) UpdateById(id int, upPro prodType.ProductTypeRequest) (models.ProductType, error) {
 
 	pro := models.ProductType{}
 
@@ -52,8 +52,8 @@ func (pd *ProductTypeDb) DeleteById(id int) (gorm.DeletedAt, error) {
 	return pro.DeletedAt, nil
 }
 
-func (pd *ProductTypeDb) GetAll() ([]producttype.ProductTypeResponse, error) {
-	proRespArr := []producttype.ProductTypeResponse{}
+func (pd *ProductTypeDb) GetAll() ([]prodType.ProductTypeResponse, error) {
+	proRespArr := []prodType.ProductTypeResponse{}
 
 	res := pd.db.Model(&models.ProductType{}).Find(&proRespArr)
 

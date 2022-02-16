@@ -1,4 +1,4 @@
-package producttype
+package prodType
 
 import "time"
 

@@ -8,6 +8,6 @@ type Cart struct {
 	Product_id    uint
 	Qty           uint
 	Price         uint
-	Status        bool
+	Status        string        `gorm:"type:enum('cart', 'order', 'payed');default:'cart'"`
 	Order_details []OrderDetail `gorm:"foreignKey:Cart_id"`
 }

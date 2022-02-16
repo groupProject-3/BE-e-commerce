@@ -8,6 +8,6 @@ type Order struct {
 	Payment_method_id uint
 	Total_qty         uint
 	Total_price       uint
-	Status            string
+	Status            string        `gorm:"type:enum('waiting', 'payed', 'problem');default:'waiting'"`
 	Order_details     []OrderDetail `gorm:"foreignKey:Order_id"`
 }
