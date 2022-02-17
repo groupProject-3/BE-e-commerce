@@ -34,3 +34,7 @@ taskRespArr := []response.TaskResponse{}
 		if _, err := paymentmethod.New(db).Create(mockPm1); err != nil {
 			t.Fatal()
 		}
+
+		{"time":"2022-02-17T15:32:03.3980837+07:00","level":"INFO","prefix":"-","file":"user_test.go","line":"110","message":"[123 34 101 109 97 105 108 34 58 34 97 110 111 110 105 109 64 49 50 51 34 44 34 110 97 109 101 34 58 34 34 44 34 112 97 115 115 119 111 114 100 34 58 34 97 110 111 110 105 109 49 50 51 34 125]"}
+{"time":"2022-02-17T15:32:03.3980837+07:00","level":"INFO","prefix":"-","file":"user_test.go","line":"117","message":"&{POST / HTTP/1.1 1 1 map[Content-Type:[application/json]] {{\"email\":\"anonim@123\",\"name\":\"\",\"password\":\"anonim123\"}} <nil> 55 [] false example.com map[] map[] <nil> map[] 192.0.2.1:1234 / <nil> <nil> <nil> <nil>}"}
+{"time":"2022-02-17T15:32:03.3980837+07:00","level":"INFO","prefix":"-","file":"user_test.go","line":"118","message":"&{0xc000200100 0xc0001b9440 /users [] [] map[] 0x334c20 map[] 0xc000218480 <nil> {{0 0} 0 0 0 0}}"}

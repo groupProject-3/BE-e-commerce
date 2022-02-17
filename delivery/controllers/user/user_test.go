@@ -14,6 +14,7 @@ import (
 	"testing"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
@@ -106,14 +107,15 @@ func TestCreate(t *testing.T) {
 			"email":    "anonim@123",
 			"password": "anonim123",
 		})
-
+		log.Info(reqBody)
 		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(reqBody))
 		res := httptest.NewRecorder()
 		req.Header.Set("Content-Type", "application/json")
 
 		context := e.NewContext(req, res)
 		context.SetPath("/users")
-
+		log.Info(req)
+		log.Info(context)
 		userController := New(&MockFailUserLib{})
 		userController.Create()(context)
 
