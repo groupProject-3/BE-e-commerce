@@ -179,6 +179,7 @@ func TestGetAll(t *testing.T) {
 
 		_, err := repo.GetAll(1)
 		assert.Nil(t, err)
+		// log.Info(res)
 	})
 
 	t.Run("fail run GetAll", func(t *testing.T) {
@@ -187,5 +188,52 @@ func TestGetAll(t *testing.T) {
 		}
 		_, err := repo.GetAll(1)
 		assert.NotNil(t, err)
+	})
+}
+
+func TestCheckProduct(t *testing.T) {
+	config := configs.GetConfig()
+	db := utils.InitDB(config)
+	repo := New(db)
+
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Cart{})
+
+	t.Run("success run GetAll", func(t *testing.T) {
+		mockUser1 := models.User{Name: "anonim1 user", Email: "anonim1 user", Password: "anonim1 user"}
+		if _, err := user.New(db).Create(mockUser1); err != nil {
+			t.Fatal()
+		}
+		mockProT1 := models.ProductType{Name: "anonim1 prot"}
+		if _, err := prodType.New(db).Create(mockProT1); err != nil {
+			t.Fatal()
+		}
+		mockProd1 := models.Product{Product_type_id: 1, Name: "anonim1 product", Price: 1000, Qty: 10, Description: "anonim1 Description"}
+		if _, err := product.New(db).Create(1, mockProd1); err != nil {
+			t.Fatal()
+		}
+		mockCart1 := models.Cart{Product_id: 1, Qty: 10}
+		if _, err := repo.Create(1, mockCart1); err != nil {
+			t.Fatal()
+		}
+
+		_, err := repo.CheckProduct(1, 1)
+		assert.Nil(t, err)
+		// log.Info(res)
+	})
+
+	t.Run("fail run GetAll", func(t *testing.T) {
+		if _, err := repo.DeleteById(1, 1); err != nil {
+			t.Log()
+		}
+		_, err := repo.CheckProduct(1, 10)
+		assert.NotNil(t, err)
+		// log.Info(res)
 	})
 }
