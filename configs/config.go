@@ -36,7 +36,7 @@ func initConfig() *AppConfig {
 	defaultConfig.Name = getEnv("NAME", "crud_api")
 	defaultConfig.Address = getEnv("ADDRESS", "localhost")
 	defaultConfig.DB_Port = 3306
-	defaultConfig.Username = getEnv("USERNAME", "root")
+	defaultConfig.Username = getEnv("USERNAME", "root") /* "root" */
 	defaultConfig.Password = getEnv("PASSWORD", "root")
 
 	fmt.Println(defaultConfig)
@@ -45,9 +45,10 @@ func initConfig() *AppConfig {
 }
 
 func getEnv(key, fallback string) string {
-	if value, ok := os.LookupEnv(key); ok {
+	if value, ok := os.LookupEnv(key); ok && value != "faliq" {
 		fmt.Println(value)
 		return value
 	}
+
 	return fallback
 }
