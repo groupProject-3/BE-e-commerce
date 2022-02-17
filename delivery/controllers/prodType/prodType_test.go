@@ -2,6 +2,7 @@ package prodType
 
 import (
 	"be/delivery/controllers/auth"
+	"be/delivery/middlewares"
 	"be/delivery/templates"
 	"be/models"
 	"bytes"
@@ -13,6 +14,7 @@ import (
 	"testing"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
@@ -100,7 +102,64 @@ func TestCreate(t *testing.T) {
 		req.Header.Set("Content=Type", "application/json")
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
 		context := e.NewContext(req, res)
-		context.SetPath("/projects")
+		context.SetPath("/product/type")
+
+		Controller := New(&mockFailProdTypeLib{})
+		if err := middlewares.JwtMiddleware()(Controller.Create())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := templates.GetProdTypeResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, 400, response.Code)
+	})
+
+	t.Run("InternalServerError", func(t *testing.T) {
+		e := echo.New()
+		reqBody, _ := json.Marshal(map[string]string{
+			"name":"anonim",
+		})
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(reqBody))
+		res := httptest.NewRecorder()
+		req.Header.Set("Content=Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/product/type")
+		log.Info(req)
+		log.Info(context)
+		Controller := New(&mockFailProdTypeLib{})
+		if err := middlewares.JwtMiddleware()(Controller.Create())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := templates.GetProdTypeResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, 500, response.Code)
+	})
+
+	t.Run("success", func(t *testing.T) {
+		e := echo.New()
+		reqBody, _ := json.Marshal(map[string]string{
+			"name":"anonim",
+		})
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(reqBody))
+		res := httptest.NewRecorder()
+		req.Header.Set("Content=Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/product/type")
+
+		Controller := New(&mockProdTypeLib{})
+		if err := middlewares.JwtMiddleware()(Controller.Create())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := templates.GetProdTypeResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, 201, response.Code)
 	})
 
 }

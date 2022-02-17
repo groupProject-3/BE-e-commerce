@@ -10,6 +10,7 @@ import (
 )
 
 func UserPath(e *echo.Echo, uc *user.UserController, ac *auth.AuthController) {
+	e.Use(middleware.CORS())
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}",
@@ -20,6 +21,7 @@ func UserPath(e *echo.Echo, uc *user.UserController, ac *auth.AuthController) {
 }
 
 func AdminPath(e *echo.Echo, uc *user.UserController, ac *auth.AuthController) {
+	e.Use(middleware.CORS())
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}",

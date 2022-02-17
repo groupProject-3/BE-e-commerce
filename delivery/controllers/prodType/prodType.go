@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
 )
 
 type ProdTypeController struct {
@@ -31,7 +32,8 @@ func (pc *ProdTypeController) Create() echo.HandlerFunc {
 
 		newProdT := templates.ProductTypeRequest{}
 
-		if err := c.Bind(newProdT); err != nil {
+		if err := c.Bind(&newProdT); err != nil || newProdT.Name == "" {
+			log.Info(err, newProdT)
 			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request for create new product type", nil))
 		}
 
@@ -71,4 +73,3 @@ func (pc *ProdTypeController) UpdateById() echo.HandlerFunc {
 
 	}
 }
-
