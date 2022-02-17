@@ -24,15 +24,15 @@ func (uc *UserController) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		newUser := templates.UserRequest{}
 		if err := c.Bind(&newUser); err != nil || newUser.Email == "" || newUser.Password == "" {
-			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request Create", nil))
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request for create new user", nil))
 		}
 		res, err := uc.repo.Create(models.User{Name: newUser.Name, Email: newUser.Email, Password: newUser.Password})
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error in access Create", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error fo create new user", nil))
 		}
 
-		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "Success Create", templates.UserResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name, Email: res.Email}))
+		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "Success create new user", templates.UserResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name, Email: res.Email}))
 	}
 }
 
