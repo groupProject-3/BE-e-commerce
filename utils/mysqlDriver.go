@@ -32,5 +32,11 @@ func InitDB(config *configs.AppConfig) *gorm.DB {
 }
 
 func AutoMigrate(DB *gorm.DB) {
-	DB.AutoMigrate(&models.Cart{}, &models.Order{}, &models.OrderDetail{}, &models.PaymentMethod{}, &models.Product{}, &models.ProductType{}, &models.User{})
+	DB.AutoMigrate(&models.ProductType{})
+	DB.AutoMigrate(&models.PaymentMethod{})
+	DB.AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.Product{})
+	DB.AutoMigrate(&models.Cart{})
+	DB.AutoMigrate(&models.Order{})
+	DB.AutoMigrate(&models.OrderDetail{})
 }

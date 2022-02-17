@@ -29,7 +29,7 @@ func (uc *UserController) Create() echo.HandlerFunc {
 		res, err := uc.repo.Create(models.User{Name: newUser.Name, Email: newUser.Email, Password: newUser.Password})
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error  server error fo create new user", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error fo create new user", nil))
 		}
 
 		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "Success create new user", templates.UserResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name, Email: res.Email}))
@@ -40,14 +40,13 @@ func (uc *UserController) GetAll() echo.HandlerFunc {
 	return func(c echo.Context) error {
 
 		res, err := uc.repo.GetAll()
-		email := middlewares.ExtractTokenAdmin(c)[0]
-		password := middlewares.ExtractTokenAdmin(c)[1]
+		email := middlewares.ExtractTokenAdmin(c)
 
-		if err != nil || email != "admin" && password != "admin" {
-			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request Get", nil))
+		if err != nil || email != "admin@gmail.com" {
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error internal server error for get all user", nil))
 		}
-
-		return c.JSON(http.StatusOK, templates.Success(http.StatusOK, "Success Get All User", res))
+		
+		return c.JSON(http.StatusOK, templates.Success(http.StatusOK, "Success get all user", res))
 
 	}
 }

@@ -38,13 +38,13 @@ func ExtractTokenId(e echo.Context) float64 {
 	return 0
 }
 
-func ExtractTokenAdmin(e echo.Context) (result [2]string) {
+func ExtractTokenAdmin(e echo.Context) (result string) {
 	user := e.Get("user").(*jwt.Token) //convert to jwt token from interface
 	if user.Valid {
 		codes := user.Claims.(jwt.MapClaims)
-		result[0] = codes["email"].(string)
-		result[1] = codes["password"].(string)
+		result = codes["email"].(string)
+		// result[1] = codes["password"].(string)
 		return result
 	}
-	return [2]string{}
+	return ""
 }

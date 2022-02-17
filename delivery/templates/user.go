@@ -1,6 +1,9 @@
 package templates
 
-import "time"
+import (
+	"be/models"
+	"time"
+)
 
 type UserRequest struct {
 	Name     string `json:"name"`
@@ -15,4 +18,10 @@ type UserResponse struct {
 
 	Name  string `json:"name"`
 	Email string `json:"email"`
+}
+
+type GetUserResponseFormat struct {
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Data    models.User `json:"data"`
 }

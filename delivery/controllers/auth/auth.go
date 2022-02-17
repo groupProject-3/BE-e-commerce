@@ -24,12 +24,12 @@ func (ac *AuthController) Login() echo.HandlerFunc {
 		Userlogin := templates.Userlogin{}
 
 		if err := c.Bind(&Userlogin); err != nil || Userlogin.Email == "" || Userlogin.Password == "" {
-			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in input file", nil))
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request for login user", nil))
 		}
 		checkedUser, err := ac.repo.Login(Userlogin)
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error in call database", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for login user", nil))
 		}
 		token, err := middewares.GenerateToken(checkedUser)
 
