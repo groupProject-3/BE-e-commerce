@@ -1,8 +1,8 @@
 package templates
 
 type Userlogin struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email"  form:"email"`
+	Password string `json:"password" form:"password"`
 }
 
 type LoginRespFormat struct {
