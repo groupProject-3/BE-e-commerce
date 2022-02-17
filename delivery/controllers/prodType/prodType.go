@@ -47,27 +47,28 @@ func (pc *ProdTypeController) Create() echo.HandlerFunc {
 
 func (pc *ProdTypeController) UpdateById() echo.HandlerFunc {
 
-
 	return func(c echo.Context) error {
 		id, _ := strconv.Atoi(c.Param("id"))
-	email := middlewares.ExtractTokenAdmin(c)
+		email := middlewares.ExtractTokenAdmin(c)
 
-	if email != "admin@gmail.com" {
-		return c.JSON(http.StatusUnauthorized, templates.BadRequest(http.StatusUnauthorized, "error not authorized", nil))
+		if email != "admin@gmail.com" {
+			return c.JSON(http.StatusUnauthorized, templates.BadRequest(http.StatusUnauthorized, "error not authorized", nil))
+		}
+
+		newProdT := templates.ProductTypeRequest{}
+
+		if err := c.Bind(newProdT); err != nil {
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request for update product type", nil))
+		}
+
+		res, err := pc.repo.UpdateById(id, newProdT)
+
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for update product type", nil))
+		}
+
+		return c.JSON(http.StatusAccepted, templates.Success(http.StatusAccepted, "success create new product Type", templates.ProductTypeResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name}))
+
 	}
-
-	newProdT := templates.ProductTypeRequest{}
-
-	if err := c.Bind(newProdT); err != nil {
-		return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request for update product type", nil))
-	}
-
-	res, err := pc.repo.UpdateById(id, newProdT)
-
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for update product type", nil))
-	}
-
 }
 
-}
