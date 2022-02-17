@@ -46,7 +46,10 @@ func (pc *ProdTypeController) Create() echo.HandlerFunc {
 }
 
 func (pc *ProdTypeController) UpdateById() echo.HandlerFunc {
-	id, _ := strconv.Atoi(c.Param("id"))
+
+
+	return func(c echo.Context) error {
+		id, _ := strconv.Atoi(c.Param("id"))
 	email := middlewares.ExtractTokenAdmin(c)
 
 	if email != "admin@gmail.com" {
@@ -64,5 +67,7 @@ func (pc *ProdTypeController) UpdateById() echo.HandlerFunc {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for update product type", nil))
 	}
+
+}
 
 }
