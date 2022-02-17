@@ -9,6 +9,7 @@ import (
 	"be/utils"
 	"testing"
 
+	"github.com/labstack/gommon/log"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
@@ -17,8 +18,14 @@ func TestCreate(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
 	db.Migrator().DropTable(&models.Product{})
-	db.Migrator().CreateTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Product{})
 
 	t.Run("success run create", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim2", Email: "anonim2", Password: "anonim2"}
@@ -51,8 +58,14 @@ func TestUpdateById(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
 	db.Migrator().DropTable(&models.Product{})
-	db.Migrator().CreateTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Product{})
 
 	t.Run("success run UpdateById", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim2", Email: "anonim2", Password: "anonim2"}
@@ -86,8 +99,14 @@ func TestDeleteById(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
 	db.Migrator().DropTable(&models.Product{})
-	db.Migrator().CreateTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Product{})
 
 	t.Run("success run DeleteById", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim2", Email: "anonim2", Password: "anonim2"}
@@ -119,8 +138,14 @@ func TestGetAllMe(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
 	db.Migrator().DropTable(&models.Product{})
-	db.Migrator().CreateTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Product{})
 
 	t.Run("success run GetAllMe", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim2", Email: "anonim2", Password: "anonim2"}
@@ -154,8 +179,14 @@ func TestGetByIdMe(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
 	db.Migrator().DropTable(&models.Product{})
-	db.Migrator().CreateTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Product{})
 
 	t.Run("success run GetAllMe", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim2", Email: "anonim2", Password: "anonim2"}
@@ -185,15 +216,22 @@ func TestGetAll(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
 	db.Migrator().DropTable(&models.Product{})
-	db.Migrator().CreateTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Product{})
 
 	t.Run("success run GetAll", func(t *testing.T) {
-		mockUser1 := models.User{Name: "anonim2", Email: "anonim2", Password: "anonim2"}
+		mockUser1 := models.User{Name: "anonim2", Email: "anonim3", Password: "anonim3"}
 		if _, err := user.New(db).Create(mockUser1); err != nil {
+			log.Info(err)
 			t.Fatal()
 		}
-		mockProT1 := models.ProductType{Name: "anonim1"}
+		mockProT1 := models.ProductType{Name: "anonim2"}
 		if _, err := prodType.New(db).Create(mockProT1); err != nil {
 			t.Fatal()
 		}
@@ -220,8 +258,14 @@ func TestGetById(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
 	db.Migrator().DropTable(&models.Product{})
-	db.Migrator().CreateTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Product{})
 
 	t.Run("success run GetAll", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim2", Email: "anonim2", Password: "anonim2"}

@@ -15,8 +15,14 @@ func TestCreate(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
 	db.Migrator().DropTable(&models.Order{})
-	db.Migrator().CreateTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Order{})
 
 	t.Run("success run create", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim1 user", Email: "anonim1 user", Password: "anonim1 user"}
@@ -45,8 +51,14 @@ func TestDeleteById(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
 	db.Migrator().DropTable(&models.Order{})
-	db.Migrator().CreateTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Order{})
 
 	t.Run("success run create", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim1 user", Email: "anonim1 user", Password: "anonim1 user"}
@@ -77,8 +89,15 @@ func TestGetById(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
 	db.Migrator().DropTable(&models.Order{})
-	db.Migrator().CreateTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Order{})
+	db.AutoMigrate(&models.OrderDetail{})
 
 	t.Run("success run create", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim1 user", Email: "anonim1 user", Password: "anonim1 user"}

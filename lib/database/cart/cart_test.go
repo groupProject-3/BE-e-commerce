@@ -19,8 +19,14 @@ func TestCreate(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
 	db.Migrator().DropTable(&models.Cart{})
-	db.Migrator().CreateTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Cart{})
 
 	t.Run("success run create", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim1 user", Email: "anonim1 user", Password: "anonim1 user"}
@@ -55,8 +61,14 @@ func TestDeleteById(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
 	db.Migrator().DropTable(&models.Cart{})
-	db.Migrator().CreateTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Cart{})
 
 	t.Run("success run DeleteById", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim1 user", Email: "anonim1 user", Password: "anonim1 user"}
@@ -92,8 +104,14 @@ func TestUpdateById(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
 	db.Migrator().DropTable(&models.Cart{})
-	db.Migrator().CreateTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Cart{})
 
 	t.Run("success run UpdateById", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim1 user", Email: "anonim1 user", Password: "anonim1 user"}
@@ -132,8 +150,14 @@ func TestGetAll(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 
+	db.Migrator().DropTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
 	db.Migrator().DropTable(&models.Cart{})
-	db.Migrator().CreateTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Cart{})
 
 	t.Run("success run GetAll", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim1 user", Email: "anonim1 user", Password: "anonim1 user"}

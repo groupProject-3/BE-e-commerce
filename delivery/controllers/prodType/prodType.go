@@ -70,7 +70,7 @@ func (pc *ProdTypeController) Put() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for update product type", nil))
 		}
 
-		return c.JSON(http.StatusAccepted, templates.Success(http.StatusAccepted, "success create new product Type", templates.ProductTypeResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name}))
+		return c.JSON(http.StatusAccepted, templates.Success(http.StatusAccepted, "success update product Type", templates.ProductTypeResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name}))
 
 	}
 }
@@ -87,10 +87,27 @@ func (pc *ProdTypeController) Delete() echo.HandlerFunc {
 		res, err := pc.repo.DeleteById(id)
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for update product type", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for delete product type", nil))
 		}
 
-		return c.JSON(http.StatusAccepted, templates.Success(http.StatusAccepted, "success create new product Type", templates.ProductTypeResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name}))
+		return c.JSON(http.StatusOK, templates.Success(nil, "success delete product Type", res))
+	}
+}
 
+func (pc *ProdTypeController) GetAll() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		email := middlewares.ExtractTokenAdmin(c)
+
+		if email != "admin@gmail.com" {
+			return c.JSON(http.StatusUnauthorized, templates.BadRequest(http.StatusUnauthorized, "error not authorized", nil))
+		}
+
+		res, err := pc.repo.GetAll()
+
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for delete product type", nil))
+		}
+
+		return c.JSON(http.StatusOK, templates.Success(nil, "success delete product Type", res))
 	}
 }

@@ -50,8 +50,8 @@ func (pd *ProductDb) DeleteById(id uint, user_id uint) (gorm.DeletedAt, error) {
 	return pro.DeletedAt, nil
 }
 
-func (pd *ProductDb) GetAllMe(user_id uint) ([]models.Product, error) {
-	pro := []models.Product{}
+func (pd *ProductDb) GetAllMe(user_id uint) ([]templates.ProductResponse, error) {
+	pro := []templates.ProductResponse{}
 
 	res := pd.db.Model(&models.Product{}).Where("user_id = ?", user_id).Find(&pro)
 
@@ -70,8 +70,8 @@ func (pd *ProductDb) GetByIdMe(id int, user_id uint) (models.Product, error) {
 	return pro, nil
 }
 
-func (pd *ProductDb) GetAll() ([]models.Product, error) {
-	pro := []models.Product{}
+func (pd *ProductDb) GetAll() ([]templates.ProductResponse, error) {
+	pro := []templates.ProductResponse{}
 
 	res := pd.db.Model(&models.Product{}).Find(&pro)
 

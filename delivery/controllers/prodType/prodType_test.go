@@ -118,7 +118,7 @@ func TestCreate(t *testing.T) {
 	t.Run("InternalServerError", func(t *testing.T) {
 		e := echo.New()
 		reqBody, _ := json.Marshal(map[string]string{
-			"name":"anonim",
+			"name": "anonim",
 		})
 		log.Info(reqBody)
 		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(reqBody))
@@ -143,7 +143,7 @@ func TestCreate(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		e := echo.New()
 		reqBody, _ := json.Marshal(map[string]string{
-			"name":"anonim",
+			"name": "anonim",
 		})
 		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(reqBody))
 		res := httptest.NewRecorder()
@@ -164,7 +164,7 @@ func TestCreate(t *testing.T) {
 	})
 }
 
-func TestUpdateById(t *testing.T) {
+func TestPut(t *testing.T) {
 	var jwtToken string
 
 	t.Run("Success Login", func(t *testing.T) {
@@ -204,7 +204,7 @@ func TestUpdateById(t *testing.T) {
 		context.SetPath("/product/type")
 
 		Controller := New(&mockFailProdTypeLib{})
-		if err := middlewares.JwtMiddleware()(Controller.UpdateById())(context); err != nil {
+		if err := middlewares.JwtMiddleware()(Controller.Put())(context); err != nil {
 			log.Fatal(err)
 			return
 		}
@@ -217,7 +217,7 @@ func TestUpdateById(t *testing.T) {
 	t.Run("InternalServerError", func(t *testing.T) {
 		e := echo.New()
 		reqBody, _ := json.Marshal(map[string]string{
-			"name":"anonim",
+			"name": "anonim",
 		})
 		log.Info(reqBody)
 		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(reqBody))
@@ -229,7 +229,7 @@ func TestUpdateById(t *testing.T) {
 		log.Info(req)
 		log.Info(context)
 		Controller := New(&mockFailProdTypeLib{})
-		if err := middlewares.JwtMiddleware()(Controller.UpdateById())(context); err != nil {
+		if err := middlewares.JwtMiddleware()(Controller.Put())(context); err != nil {
 			log.Fatal(err)
 			return
 		}
@@ -242,7 +242,7 @@ func TestUpdateById(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		e := echo.New()
 		reqBody, _ := json.Marshal(map[string]string{
-			"name":"anonim",
+			"name": "anonim",
 		})
 		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(reqBody))
 		res := httptest.NewRecorder()
@@ -252,7 +252,7 @@ func TestUpdateById(t *testing.T) {
 		context.SetPath("/product/type")
 
 		Controller := New(&mockProdTypeLib{})
-		if err := middlewares.JwtMiddleware()(Controller.UpdateById())(context); err != nil {
+		if err := middlewares.JwtMiddleware()(Controller.Put())(context); err != nil {
 			log.Fatal(err)
 			return
 		}
@@ -263,3 +263,158 @@ func TestUpdateById(t *testing.T) {
 	})
 }
 
+func TestDelete(t *testing.T) {
+	var jwtToken string
+
+	t.Run("Success Login", func(t *testing.T) {
+		e := echo.New()
+		reqBody, _ := json.Marshal(map[string]string{
+			"name":     "admin",
+			"email":    "admin@gmail.com",
+			"password": "admin",
+		})
+
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(reqBody))
+		res := httptest.NewRecorder()
+		req.Header.Set("Content-Type", "application/json")
+		context := e.NewContext(req, res)
+		context.SetPath("/login")
+
+		authController := auth.New(&MockAuthLib{})
+		authController.Login()(context)
+
+		response := templates.LoginRespFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		jwtToken = response.Data["token"].(string)
+
+		assert.Equal(t, response.Message, "success login")
+		assert.NotNil(t, response.Data["token"])
+	})
+
+	t.Run("InternalServerError", func(t *testing.T) {
+		e := echo.New()
+		reqBody, _ := json.Marshal(map[string]string{
+			"name": "anonim",
+		})
+		log.Info(reqBody)
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(reqBody))
+		res := httptest.NewRecorder()
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/product/type")
+		log.Info(req)
+		log.Info(context)
+		Controller := New(&mockFailProdTypeLib{})
+		if err := middlewares.JwtMiddleware()(Controller.Delete())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := templates.GetProdTypeResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, 500, response.Code)
+	})
+
+	t.Run("success", func(t *testing.T) {
+		e := echo.New()
+		reqBody, _ := json.Marshal(map[string]string{
+			"name": "anonim",
+		})
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(reqBody))
+		res := httptest.NewRecorder()
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/product/type")
+
+		Controller := New(&mockProdTypeLib{})
+		if err := middlewares.JwtMiddleware()(Controller.Delete())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := templates.GetProdTypeResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, 200, response.Code)
+	})
+}
+
+func TestGetAll(t *testing.T) {
+	var jwtToken string
+
+	t.Run("Success Login", func(t *testing.T) {
+		e := echo.New()
+		reqBody, _ := json.Marshal(map[string]string{
+			"name":     "admin",
+			"email":    "admin@gmail.com",
+			"password": "admin",
+		})
+
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(reqBody))
+		res := httptest.NewRecorder()
+		req.Header.Set("Content-Type", "application/json")
+		context := e.NewContext(req, res)
+		context.SetPath("/login")
+
+		authController := auth.New(&MockAuthLib{})
+		authController.Login()(context)
+
+		response := templates.LoginRespFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		jwtToken = response.Data["token"].(string)
+
+		assert.Equal(t, response.Message, "success login")
+		assert.NotNil(t, response.Data["token"])
+	})
+
+	t.Run("InternalServerError", func(t *testing.T) {
+		e := echo.New()
+		reqBody, _ := json.Marshal(map[string]string{
+			"name": "anonim",
+		})
+		log.Info(reqBody)
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(reqBody))
+		res := httptest.NewRecorder()
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/product/type")
+		log.Info(req)
+		log.Info(context)
+		Controller := New(&mockFailProdTypeLib{})
+		if err := middlewares.JwtMiddleware()(Controller.GetAll())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := templates.GetProdTypeResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, 500, response.Code)
+	})
+
+	t.Run("success", func(t *testing.T) {
+		e := echo.New()
+		reqBody, _ := json.Marshal(map[string]string{
+			"name": "anonim",
+		})
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(reqBody))
+		res := httptest.NewRecorder()
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/product/type")
+
+		Controller := New(&mockProdTypeLib{})
+		if err := middlewares.JwtMiddleware()(Controller.GetAll())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := templates.GetProdTypeResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, 200, response.Code)
+	})
+}
