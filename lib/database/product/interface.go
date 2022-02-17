@@ -12,7 +12,7 @@ type Product interface {
 	UpdateById(id int, user_id uint, upPro templates.ProductRequest) (models.Product, error)
 	DeleteById(id int, user_id uint) (gorm.DeletedAt, error)
 	GetAllMe(user_id uint) ([]templates.ProductResponse, error)
-	GetByIdMe(id int, user_id uint) (models.Product, error)
+	GetByIdMe(id int, user_id uint) (templates.ProductResponse, error)
 	GetAll() ([]templates.ProductResponse, error)
-	GetById(id int) (models.Product, error)
+	GetById(id int) (templates.ProductResponse, error)
 }

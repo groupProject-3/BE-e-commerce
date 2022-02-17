@@ -161,8 +161,9 @@ func TestGetAllMe(t *testing.T) {
 			t.Fatal()
 		}
 
-		_, err := repo.GetAllMe(1)
+		_ , err := repo.GetAllMe(1)
 		assert.Nil(t, err)
+		// log.Info(res)
 	})
 
 	t.Run("fail run GetAllMe", func(t *testing.T) {
@@ -202,12 +203,12 @@ func TestGetByIdMe(t *testing.T) {
 			t.Fatal()
 		}
 
-		_, err := repo.GetByIdMe(1, 1)
+		_ , err := repo.GetByIdMe(1, 1)
 		assert.Nil(t, err)
 	})
 
 	t.Run("fail run GetByIdMe", func(t *testing.T) {
-		_, err := repo.GetByIdMe(10, 1)
+		_ , err := repo.GetByIdMe(10, 1)
 		assert.NotNil(t, err)
 	})
 }

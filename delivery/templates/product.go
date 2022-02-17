@@ -4,6 +4,7 @@ import "time"
 
 type ProductRequest struct {
 	Name            string `json:"name"`
+	Image           string `json:"image"`
 	Product_type_id uint   `json:"product_type_id"`
 	Price           int    `json:"price"`
 	Qty             int    `json:"qty"`
@@ -15,9 +16,10 @@ type ProductResponse struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 
-	Name            string `json:"name"`
-	Product_type_id uint   `json:"product_type_id"`
-	Price           int    `json:"price"`
-	Qty             int    `json:"qty"`
-	Description     string `json:"description"`
+	Name              string `json:"name"`
+	Image             string `json:"image"`
+	Price             int    `json:"price"`
+	Qty               int    `json:"qty"`
+	Description       string `json:"description"`
+	Product_type_name string `json:"product_type_name"`
 }

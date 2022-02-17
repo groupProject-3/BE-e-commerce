@@ -5,8 +5,6 @@ import "time"
 type OrderDetailRequest struct {
 	Cart_id  uint `json:"cart_id"`
 	Order_id uint `json:"order_id"`
-	Qty      uint `json:"qty"`
-	Price    uint `json:"price"`
 }
 
 type OrderDetailResponse struct {
@@ -14,8 +12,9 @@ type OrderDetailResponse struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 
-	Cart_id  uint `json:"cart_id"`
-	Order_id uint `json:"order_id"`
-	Qty      uint `json:"qty"`
-	Price    uint `json:"price"`
+	Product_name string `json:"product_name"`
+	Name         string `json:"name"`
+	Image        string `json:"image"`
+	Qty          uint   `json:"qty"`
+	Status       string `json:"status"`
 }
