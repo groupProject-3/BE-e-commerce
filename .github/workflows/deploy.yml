@@ -16,7 +16,8 @@ jobs:
         script: |
           echo ${{ secrets.USERNAME }}
           cd repo
-          cd be-e-commerce
+          cd be
+          cd be-e-com
           cd BE-e-commerce
           git pull origin main
           docker-compose down --rmi all && docker-compose up --build -d
