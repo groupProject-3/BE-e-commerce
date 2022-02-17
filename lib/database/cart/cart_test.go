@@ -205,7 +205,7 @@ func TestCheckProduct(t *testing.T) {
 	db.Migrator().DropTable(&models.OrderDetail{})
 	db.AutoMigrate(&models.Cart{})
 
-	t.Run("success run GetAll", func(t *testing.T) {
+	t.Run("success run CheckProduct", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim1 user", Email: "anonim1 user", Password: "anonim1 user"}
 		if _, err := user.New(db).Create(mockUser1); err != nil {
 			t.Fatal()
@@ -223,12 +223,13 @@ func TestCheckProduct(t *testing.T) {
 			t.Fatal()
 		}
 
-		_, err := repo.CheckProduct(1, 1)
+		res, err := repo.CheckProduct(1, 1)
 		assert.Nil(t, err)
+		assert.Equal(t, true, res)
 		// log.Info(res)
 	})
 
-	t.Run("fail run GetAll", func(t *testing.T) {
+	t.Run("fail run CheckProduct", func(t *testing.T) {
 		if _, err := repo.DeleteById(1, 1); err != nil {
 			t.Log()
 		}

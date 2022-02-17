@@ -80,11 +80,12 @@ func TestUpdateById(t *testing.T) {
 		if _, err := repo.Create(1, mockProd1); err != nil {
 			t.Fatal()
 		}
-		mockProd := templates.ProductRequest{Product_type_id: 1, Name: "anonim2 product", Price: 1000, Qty: 10, Description: "anonim2 Description"}
+		mockProd := templates.ProductRequest{Product_type_id: 1, Name: "anonim2 product", Description: "anonim2 Description"}
 
 		res, err := repo.UpdateById(1, 1, mockProd)
 		assert.Nil(t, err)
 		assert.Equal(t, "anonim2 product", res.Name)
+		// log.Info(res)
 	})
 
 	t.Run("fail run UpdateById", func(t *testing.T) {

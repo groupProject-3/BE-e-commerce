@@ -55,7 +55,7 @@ func (cd *CartDb) UpdateById(id uint, user_id uint, upCart templates.CartRequest
 func (cd *CartDb) GetAll(user_id uint) ([]templates.CartResponse, error) {
 	cartRespArr := []templates.CartResponse{}
 
-	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ?", user_id).Select("carts.id as ID, carts.created_at as CreatedAt, carts.updated_at as UpdatedAt, carts.qty as Qty, products.name as Name, products.image as Image, carts.status as Status").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&cartRespArr)
+	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ?", user_id).Select("carts.id as ID, carts.created_at as CreatedAt, carts.updated_at as UpdatedAt, carts.qty as Qty, products.price as Price, products.name as Name, products.image as Image, carts.status as Status").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&cartRespArr)
 
 	if res.Error != nil || res.RowsAffected == 0 {
 		return nil, errors.New(gorm.ErrRecordNotFound.Error())
@@ -69,7 +69,7 @@ func (cd *CartDb) CheckProduct(user_id uint, product_id uint) (bool, error) {
 	cart := models.Cart{}
 
 	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.product_id = ?", user_id, product_id)
-
+	res.Find(&cart)
 	if cart.ID == 0 {
 		return false, errors.New(gorm.ErrRecordNotFound.Error())
 	}
@@ -79,4 +79,17 @@ func (cd *CartDb) CheckProduct(user_id uint, product_id uint) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func (cd *CartDb) FindId(user_id uint, product_id uint) (uint, error) {
+
+	cart := models.Cart{}
+
+	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.product_id = ?", user_id, product_id).Find(&cart)
+
+	if res.Error != nil {
+		return 0, errors.New(gorm.ErrRecordNotFound.Error())
+	}
+
+	return cart.ID, nil
 }

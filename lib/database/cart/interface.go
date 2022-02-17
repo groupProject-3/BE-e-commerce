@@ -13,4 +13,5 @@ type Cart interface {
 	UpdateById(id uint, user_id uint, upCart templates.CartRequest) (models.Cart, error)
 	GetAll(user_id uint) ([]templates.CartResponse, error)
 	CheckProduct(user_id uint, product_id uint) (bool, error)
+	FindId(user_id uint, product_id uint) (uint, error)
 }
