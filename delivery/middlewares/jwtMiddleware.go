@@ -1,4 +1,4 @@
-package middewares
+package middlewares
 
 import (
 	"be/configs"

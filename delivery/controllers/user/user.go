@@ -1,6 +1,7 @@
 package user
 
 import (
+	"be/delivery/middlewares"
 	"be/delivery/templates"
 	"be/lib/database/user"
 	"be/models"
@@ -32,5 +33,21 @@ func (uc *UserController) Create() echo.HandlerFunc {
 		}
 
 		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "Success Create", templates.UserResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name, Email: res.Email}))
+	}
+}
+
+func (uc *UserController) GetAll() echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		res, err := uc.repo.GetAll()
+		email := middlewares.ExtractTokenAdmin(c)[0]
+		password := middlewares.ExtractTokenAdmin(c)[1]
+
+		if err != nil || email != "admin" && password != "admin" {
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request Get", nil))
+		}
+
+		return c.JSON(http.StatusOK, templates.Success(http.StatusOK, "Success Get All User", res))
+
 	}
 }
