@@ -14,7 +14,8 @@ type OrderResponse struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 
-	Payment_method_id uint                  `json:"payment_method_id"`
-	Status            string                `json:"status"`
+	Name              string         `json:"name"`
+	Payment_method_id uint           `json:"payment_method_id"`
+	Status            string         `json:"status"`
 	OrderDetails      []CartResponse `json:"orderDetails"`
 }

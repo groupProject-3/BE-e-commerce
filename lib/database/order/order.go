@@ -42,7 +42,7 @@ func (od *OrderDb) DeleteById(id uint, user_id uint) (gorm.DeletedAt, error) {
 func (od *OrderDb) GetById(id uint, user_id uint) (templates.OrderResponse, error) {
 	orderResp := templates.OrderResponse{}
 
-	res := od.db.Model(&models.Order{}).Where("orders.id = ? AND orders.user_id = ?", id, user_id).First(&orderResp)
+	res := od.db.Model(&models.Order{}).Where("orders.id = ? AND orders.user_id = ?", id, user_id).Select("orders.id as ID, orders.created_at as CreatedAt, orders.updated_at as UpdatedAt, users.name as Name, orders.payment_method_id as Payment_method_id, orders.status as Status").Joins("inner join users on users.id = orders.user_id").First(&orderResp)
 
 	if res.RowsAffected == 0 {
 		return templates.OrderResponse{}, res.Error

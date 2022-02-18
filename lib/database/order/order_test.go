@@ -11,6 +11,7 @@ import (
 	"be/utils"
 	"testing"
 
+	"github.com/labstack/gommon/log"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -131,7 +132,7 @@ func TestGetById(t *testing.T) {
 		res, err := repo.GetById(1, 1)
 		assert.Nil(t, err)
 		assert.NotNil(t, res)
-		// log.Info(res)
+		log.Info(res)
 
 	})
 
