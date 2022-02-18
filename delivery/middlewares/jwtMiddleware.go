@@ -19,7 +19,7 @@ func GenerateToken(u models.User) (string, error) {
 		"id":       u.ID,
 		"email":    u.Email,
 		"password": u.Password,
-		"exp":      time.Now().Add(time.Hour * 1).Unix(),
+		"exp":      time.Now().Add(time.Hour * 10).Unix(),
 		"auth":     true,
 	}
 
