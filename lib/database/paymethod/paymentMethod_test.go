@@ -1,4 +1,4 @@
-package paymentmethod
+package paymethod
 
 import (
 	"be/configs"

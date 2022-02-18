@@ -3,7 +3,7 @@ package order
 import (
 	"be/configs"
 	"be/lib/database/cart"
-	paymentmethod "be/lib/database/paymentMethod"
+	paymentmethod "be/lib/database/paymethod"
 	"be/lib/database/prodType"
 	"be/lib/database/product"
 	"be/lib/database/user"

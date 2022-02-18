@@ -4,7 +4,7 @@ import (
 	"be/delivery/controllers/auth"
 	"be/delivery/controllers/cart"
 	"be/delivery/controllers/order"
-	"be/delivery/controllers/paymentmethod"
+	paymentmethod "be/delivery/controllers/paymethod"
 	"be/delivery/controllers/prodType"
 	"be/delivery/controllers/product"
 	"be/delivery/controllers/user"

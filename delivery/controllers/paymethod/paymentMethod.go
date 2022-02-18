@@ -1,9 +1,9 @@
-package paymentmethod
+package paymethod
 
 import (
 	"be/delivery/middlewares"
 	"be/delivery/templates"
-	paymentmethod "be/lib/database/paymentmethod"
+	paymentmethod "be/lib/database/paymethod"
 	"be/models"
 	"net/http"
 	"strconv"

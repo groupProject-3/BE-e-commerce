@@ -4,7 +4,7 @@ import (
 	"be/configs"
 	"be/lib/database/cart"
 	"be/lib/database/order"
-	"be/lib/database/paymentmethod"
+	"be/lib/database/paymethod"
 	"be/lib/database/prodType"
 	"be/lib/database/product"
 	"be/lib/database/user"
@@ -46,7 +46,7 @@ func TestCreate(t *testing.T) {
 			t.Fatal()
 		}
 		mockPm1 := models.PaymentMethod{Name: "anonim1"}
-		if _, err := paymentmethod.New(db).Create(mockPm1); err != nil {
+		if _, err := paymethod.New(db).Create(mockPm1); err != nil {
 			t.Fatal()
 		}
 		mockOrder1 := models.Order{Payment_method_id: 1}
@@ -98,7 +98,7 @@ func TestDeleteById(t *testing.T) {
 			t.Fatal()
 		}
 		mockPm1 := models.PaymentMethod{Name: "anonim1"}
-		if _, err := paymentmethod.New(db).Create(mockPm1); err != nil {
+		if _, err := paymethod.New(db).Create(mockPm1); err != nil {
 			t.Fatal()
 		}
 		mockOrder1 := models.Order{Payment_method_id: 1}
@@ -152,7 +152,7 @@ func TestGetAll(t *testing.T) {
 			t.Fatal()
 		}
 		mockPm1 := models.PaymentMethod{Name: "anonim1"}
-		if _, err := paymentmethod.New(db).Create(mockPm1); err != nil {
+		if _, err := paymethod.New(db).Create(mockPm1); err != nil {
 			t.Fatal()
 		}
 		mockOrder1 := models.Order{Payment_method_id: 1}
