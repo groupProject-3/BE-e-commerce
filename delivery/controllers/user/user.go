@@ -43,9 +43,9 @@ func (uc *UserController) GetAll() echo.HandlerFunc {
 		email := middlewares.ExtractTokenAdmin(c)
 
 		if err != nil || email != "admin@gmail.com" {
-			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error internal server error for get all user", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for get all user", nil))
 		}
-		
+
 		return c.JSON(http.StatusOK, templates.Success(http.StatusOK, "Success get all user", res))
 
 	}

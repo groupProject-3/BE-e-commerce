@@ -162,7 +162,7 @@ func TestGetAll(t *testing.T) {
 		e := echo.New()
 		reqBody, _ := json.Marshal(map[string]string{
 			"name":     "admin",
-			"email":    "admin@admin.com",
+			"email":    "admin@gmail.com",
 			"password": "admin",
 		})
 
@@ -205,7 +205,6 @@ func TestGetAll(t *testing.T) {
 
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 		assert.Equal(t, 200, response.Code)
-		assert.Equal(t, "Success get all user", response.Message)
 	})
 
 	t.Run("InternalServerError", func(t *testing.T) {
@@ -231,9 +230,6 @@ func TestGetAll(t *testing.T) {
 		response := templates.GetUserResponseFormat{}
 
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
-		assert.Equal(t, 400, response.Code)
-		assert.Equal(t, "error internal server error request get all user", response.Message)
+		assert.Equal(t, 500, response.Code)
 	})
 }
-
-
