@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
 )
 
 type ProdController struct {
@@ -31,7 +32,8 @@ func (pc *ProdController) Create() echo.HandlerFunc {
 		}
 
 		res, err := pc.repo.Create(user_id, models.Product{Name: newProd.Name, Product_type_id: newProd.Product_type_id, Price: newProd.Price, Qty: newProd.Qty, Description: newProd.Description})
-
+		log.Info(err)
+		log.Info(newProd)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for create product", nil))
 		}

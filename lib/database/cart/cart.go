@@ -40,10 +40,16 @@ func (cd *CartDb) DeleteById(id uint, user_id uint) (gorm.DeletedAt, error) {
 
 func (cd *CartDb) UpdateById(id uint, user_id uint, upCart templates.CartRequest) (models.Cart, error) {
 
+	cartInit := models.Cart{}
+
+	if res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.id = ?", user_id, id).Find(&cartInit); res.Error != nil {
+		return models.Cart{}, res.Error
+	}
+
 	if _, err := cd.DeleteById(id, user_id); err != nil {
 		return models.Cart{}, err
 	}
-	cart := models.Cart{Product_id: upCart.Product_id, Qty: upCart.Qty, Status: upCart.Status}
+	cart := models.Cart{Product_id: upCart.Product_id, Qty: (upCart.Qty + cartInit.Qty), Status: upCart.Status}
 	res, err := cd.Create(user_id, cart)
 
 	if err != nil {
