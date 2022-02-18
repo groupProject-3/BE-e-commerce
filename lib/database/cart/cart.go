@@ -26,10 +26,11 @@ func (cd *CartDb) Create(user_id uint, newCart models.Cart) (models.Cart, error)
 	return newCart, nil
 }
 
-func (cd *CartDb) DeleteById(id uint, user_id uint) (gorm.DeletedAt, error) {
+func (cd *CartDb) DeleteById(pro_id uint, user_id uint) (gorm.DeletedAt, error) {
+
 	cart := models.Cart{}
 
-	res := cd.db.Model(&models.Cart{}).Where("id = ? AND user_id = ?", id, user_id).Delete(&cart)
+	res := cd.db.Model(&models.Cart{}).Where("product_id = ? AND user_id = ?", pro_id, user_id).Delete(&cart)
 
 	if res.RowsAffected == 0 {
 		return cart.DeletedAt, errors.New(gorm.ErrRecordNotFound.Error())
@@ -38,15 +39,15 @@ func (cd *CartDb) DeleteById(id uint, user_id uint) (gorm.DeletedAt, error) {
 	return cart.DeletedAt, nil
 }
 
-func (cd *CartDb) UpdateById(id uint, user_id uint, upCart templates.CartRequest) (models.Cart, error) {
+func (cd *CartDb) UpdateById(prod_id uint, user_id uint, upCart templates.CartRequest) (models.Cart, error) {
 
 	cartInit := models.Cart{}
 
-	if res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.id = ?", user_id, id).Find(&cartInit); res.Error != nil {
+	if res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.product_id = ?", user_id, prod_id).Find(&cartInit); res.Error != nil {
 		return models.Cart{}, res.Error
 	}
 
-	if _, err := cd.DeleteById(id, user_id); err != nil {
+	if _, err := cd.DeleteById(prod_id, user_id); err != nil {
 		return models.Cart{}, err
 	}
 	// log.Info(cd.GetAll(1))
@@ -67,7 +68,7 @@ func (cd *CartDb) UpdateById(id uint, user_id uint, upCart templates.CartRequest
 func (cd *CartDb) GetAll(user_id uint) ([]templates.CartResponse, error) {
 	cartRespArr := []templates.CartResponse{}
 
-	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ?", user_id).Select("carts.id as ID, carts.created_at as CreatedAt, carts.updated_at as UpdatedAt, carts.qty as Qty, products.price as Price, products.name as Name, products.image as Image, carts.status as Status, carts.product_id as Product_id").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&cartRespArr)
+	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ?", user_id).Select("carts.id as ID, carts.created_at as CreatedAt, carts.updated_at as UpdatedAt, carts.qty as Qty, products.price as Price, products.name as Name, products.image as Image, carts.status as Status, carts.product_id as Product_id, products.qty as Product_qty").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&cartRespArr)
 
 	if res.Error != nil || res.RowsAffected == 0 {
 		return nil, errors.New(gorm.ErrRecordNotFound.Error())
@@ -89,10 +90,10 @@ func (cd *CartDb) FindId(user_id uint, product_id uint) (uint, error) {
 	return cart.ID, nil
 }
 
-func (cd *CartDb) GetById(id uint, user_id uint) (templates.CartResponse, error) {
+func (cd *CartDb) GetById(prod_id uint, user_id uint) (templates.CartResponse, error) {
 	cartRespArr := templates.CartResponse{}
 
-	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.id = ?", user_id, id).Select("carts.id as ID, carts.created_at as CreatedAt, carts.updated_at as UpdatedAt, carts.qty as Qty, products.price as Price, products.name as Name, products.image as Image, carts.status as Status, carts.product_id as Product_id").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&cartRespArr)
+	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.product_id = ?", user_id, prod_id).Select("carts.id as ID, carts.created_at as CreatedAt, carts.updated_at as UpdatedAt, carts.qty as Qty, products.price as Price, products.name as Name, products.image as Image, carts.status as Status, carts.product_id as Product_id, products.qty as Product_qty").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&cartRespArr)
 	if res.Error != nil /* || res.RowsAffected == 0 */ {
 		return cartRespArr, errors.New(gorm.ErrRecordNotFound.Error())
 	}
