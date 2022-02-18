@@ -49,13 +49,19 @@ func (cd *CartDb) UpdateById(id uint, user_id uint, upCart templates.CartRequest
 	if _, err := cd.DeleteById(id, user_id); err != nil {
 		return models.Cart{}, err
 	}
-	cart := models.Cart{Product_id: upCart.Product_id, Qty: (upCart.Qty + cartInit.Qty), Status: upCart.Status}
-	res, err := cd.Create(user_id, cart)
+	// log.Info(cd.GetAll(1))
+	cd.db.Create(&models.Cart{User_id: user_id, Product_id: cartInit.Product_id, Qty: cartInit.Qty, Status: cartInit.Status})
+	// log.Info(cd.GetAll(1))
+	cartInit2 := models.Cart{}
+	cd.db.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.product_id = ?", user_id, cartInit.Product_id).Find(&cartInit2)
+	// log.Info(cartInit2)
+	// log.Info(cd.GetAll(1))
+	err := cd.db.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.id = ?", user_id, cartInit2.ID).Updates(models.Cart{Qty: upCart.Qty, Status: upCart.Status}).First(&cartInit2)
 
-	if err != nil {
-		return models.Cart{}, err
+	if err.Error != nil {
+		return models.Cart{}, err.Error
 	}
-	return res, nil
+	return cartInit, nil
 }
 
 func (cd *CartDb) GetAll(user_id uint) ([]templates.CartResponse, error) {
@@ -87,8 +93,7 @@ func (cd *CartDb) GetById(id uint, user_id uint) (templates.CartResponse, error)
 	cartRespArr := templates.CartResponse{}
 
 	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.id = ?", user_id, id).Select("carts.id as ID, carts.created_at as CreatedAt, carts.updated_at as UpdatedAt, carts.qty as Qty, products.price as Price, products.name as Name, products.image as Image, carts.status as Status, carts.product_id as Product_id").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&cartRespArr)
-
-	if res.Error != nil || res.RowsAffected == 0 {
+	if res.Error != nil /* || res.RowsAffected == 0 */ {
 		return cartRespArr, errors.New(gorm.ErrRecordNotFound.Error())
 	}
 
