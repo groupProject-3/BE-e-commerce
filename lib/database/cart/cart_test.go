@@ -191,7 +191,7 @@ func TestGetAll(t *testing.T) {
 	})
 }
 
-func TestCheckProduct(t *testing.T) {
+func TestFindId(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
@@ -223,9 +223,8 @@ func TestCheckProduct(t *testing.T) {
 			t.Fatal()
 		}
 
-		res, err := repo.CheckProduct(1, 1)
+		_, err := repo.FindId(1, 1)
 		assert.Nil(t, err)
-		assert.Equal(t, true, res)
 		// log.Info(res)
 	})
 
@@ -233,7 +232,7 @@ func TestCheckProduct(t *testing.T) {
 		if _, err := repo.DeleteById(1, 1); err != nil {
 			t.Log()
 		}
-		_, err := repo.CheckProduct(1, 10)
+		_, err := repo.FindId(1, 1)
 		assert.NotNil(t, err)
 		// log.Info(res)
 	})

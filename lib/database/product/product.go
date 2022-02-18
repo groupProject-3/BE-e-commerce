@@ -93,3 +93,15 @@ func (pd *ProductDb) GetById(id int) (templates.ProductResponse, error) {
 	}
 	return pro, nil
 }
+
+func (pd *ProductDb) UpdateByIdAll(id int, upPro templates.ProductRequest) (models.Product, error) {
+	pro := models.Product{}
+
+	res := pd.db.Model(&models.Product{}).Where("id = ?", id).Updates(models.Product{Name: upPro.Name, Image: pro.Image, Product_type_id: upPro.Product_type_id, Qty: upPro.Qty, Price: upPro.Price, Description: upPro.Description}).First(&pro)
+
+	if res.RowsAffected == 0 {
+		return models.Product{}, errors.New(gorm.ErrRecordNotFound.Error())
+	}
+
+	return pro, nil
+}

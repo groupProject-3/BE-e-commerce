@@ -2,7 +2,10 @@ package order
 
 import (
 	"be/configs"
+	"be/lib/database/cart"
 	paymentmethod "be/lib/database/paymentMethod"
+	"be/lib/database/prodType"
+	"be/lib/database/product"
 	"be/lib/database/user"
 	"be/models"
 	"be/utils"
@@ -97,11 +100,23 @@ func TestGetById(t *testing.T) {
 	db.Migrator().DropTable(&models.Order{})
 	db.Migrator().DropTable(&models.OrderDetail{})
 	db.AutoMigrate(&models.Order{})
-	db.AutoMigrate(&models.OrderDetail{})
+	db.AutoMigrate(&models.Cart{})
 
 	t.Run("success run create", func(t *testing.T) {
 		mockUser1 := models.User{Name: "anonim1 user", Email: "anonim1 user", Password: "anonim1 user"}
 		if _, err := user.New(db).Create(mockUser1); err != nil {
+			t.Fatal()
+		}
+		mockProT1 := models.ProductType{Name: "anonim1 prot"}
+		if _, err := prodType.New(db).Create(mockProT1); err != nil {
+			t.Fatal()
+		}
+		mockProd1 := models.Product{Product_type_id: 1, Name: "anonim1 product", Price: 1000, Qty: 10, Description: "anonim1 Description"}
+		if _, err := product.New(db).Create(1, mockProd1); err != nil {
+			t.Fatal()
+		}
+		mockCart1 := models.Cart{Product_id: 1, Qty: 10, Status: "order"}
+		if _, err := cart.New(db).Create(1, mockCart1); err != nil {
 			t.Fatal()
 		}
 		mockPm1 := models.PaymentMethod{Name: "anonim1"}
@@ -116,6 +131,8 @@ func TestGetById(t *testing.T) {
 		res, err := repo.GetById(1, 1)
 		assert.Nil(t, err)
 		assert.NotNil(t, res)
+		// log.Info(res)
+
 	})
 
 	t.Run("fail run create", func(t *testing.T) {

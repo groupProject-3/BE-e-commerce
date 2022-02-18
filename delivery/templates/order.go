@@ -16,5 +16,5 @@ type OrderResponse struct {
 
 	Payment_method_id uint                  `json:"payment_method_id"`
 	Status            string                `json:"status"`
-	OrderDetails      []OrderDetailResponse `json:"orderDetails"`
+	OrderDetails      []CartResponse `json:"orderDetails"`
 }
