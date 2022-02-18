@@ -163,10 +163,7 @@ func (cc *CartController) UpdateById() echo.HandlerFunc {
 
 
 
-		return c.JSON(http.StatusAccepted, templates.Success(http.StatusAccepted, "success update cart", map[string]interface{}{
-			"data":res,
-			"priceTotal":priceTotal,
-		}))
+		return c.JSON(http.StatusAccepted, templates.Success(http.StatusAccepted, "success update cart", res))
 	}
 }
 

@@ -68,7 +68,7 @@ func (cd *CartDb) UpdateById(prod_id uint, user_id uint, upCart templates.CartRe
 func (cd *CartDb) GetAll(user_id uint) ([]templates.CartResponse, error) {
 	cartRespArr := []templates.CartResponse{}
 
-	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ?", user_id).Select("carts.id as ID, carts.created_at as CreatedAt, carts.updated_at as UpdatedAt, carts.qty as Qty, products.price as Price, products.name as Name, products.image as Image, carts.status as Status, carts.product_id as Product_id, products.qty as Product_qty").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&cartRespArr)
+	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ?", user_id).Select("carts.id as ID, carts.created_at as CreatedAt, carts.updated_at as UpdatedAt, carts.qty as Qty, products.price as Price, products.name as Name, products.image as Image, carts.status as Status, carts.product_id as Product_id, products.qty as Product_qty, carts.qty * products.price as PriceTotal ").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&cartRespArr)
 
 	if res.Error != nil || res.RowsAffected == 0 {
 		return nil, errors.New(gorm.ErrRecordNotFound.Error())
