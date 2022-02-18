@@ -2,7 +2,7 @@ package paymentmethod
 
 import (
 	"be/configs"
-	paymentmethod "be/delivery/controllers/paymentMethod"
+	"be/delivery/templates"
 	"be/models"
 	"be/utils"
 	"testing"
@@ -15,8 +15,14 @@ func TestCreate(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
 	db.Migrator().DropTable(&models.PaymentMethod{})
-	db.Migrator().CreateTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.PaymentMethod{})
 
 	t.Run("success run create", func(t *testing.T) {
 		mockPm := models.PaymentMethod{Name: "anonim1"}
@@ -26,7 +32,7 @@ func TestCreate(t *testing.T) {
 	})
 
 	t.Run("fail run create", func(t *testing.T) {
-		mockPm1 := models.PaymentMethod{Name: "anonim1"}
+		mockPm1 := models.PaymentMethod{Name: "anonim2"}
 		if _, err := repo.Create(mockPm1); err != nil {
 			t.Fatal()
 		}
@@ -40,22 +46,28 @@ func TestUpdateById(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
 	db.Migrator().DropTable(&models.PaymentMethod{})
-	db.Migrator().CreateTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.PaymentMethod{})
 
 	t.Run("success run UpdateById", func(t *testing.T) {
 		mockPm1 := models.PaymentMethod{Name: "anonim1"}
 		if _, err := repo.Create(mockPm1); err != nil {
 			t.Fatal()
 		}
-		upPm := paymentmethod.PaymentMethodRequest{Name: "anonim2"}
+		upPm := templates.PaymentMethodRequest{Name: "anonim2"}
 		res, err := repo.UpdateById(1, upPm)
 		assert.Nil(t, err)
 		assert.Equal(t, "anonim2", res.Name)
 	})
 
 	t.Run("fail run UpdateById", func(t *testing.T) {
-		upPm := paymentmethod.PaymentMethodRequest{Name: "anonim2"}
+		upPm := templates.PaymentMethodRequest{Name: "anonim2"}
 		_, err := repo.UpdateById(10, upPm)
 		assert.NotNil(t, err)
 	})
@@ -65,8 +77,14 @@ func TestDeleteById(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
 	db.Migrator().DropTable(&models.PaymentMethod{})
-	db.Migrator().CreateTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.PaymentMethod{})
 
 	t.Run("success run DeleteById", func(t *testing.T) {
 		mockPm1 := models.PaymentMethod{Name: "anonim1"}
@@ -89,8 +107,14 @@ func TestGetAll(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	repo := New(db)
+	db.Migrator().DropTable(&models.ProductType{})
 	db.Migrator().DropTable(&models.PaymentMethod{})
-	db.Migrator().CreateTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.PaymentMethod{})
 
 	t.Run("success run GetAll", func(t *testing.T) {
 		mockPm1 := models.PaymentMethod{Name: "anonim1"}

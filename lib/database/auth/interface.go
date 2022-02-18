@@ -1,10 +1,10 @@
 package auth
 
 import (
-	"be/delivery/controllers/auth"
+	"be/delivery/templates"
 	"be/models"
 )
 
 type Auth interface {
-	Login(UserLogin auth.Userlogin) (models.User, error)
+	Login(UserLogin templates.Userlogin) (models.User, error)
 }

@@ -1,7 +1,7 @@
 package orderDetail
 
 import (
-	"be/delivery/controllers/orderDetail"
+	"be/delivery/templates"
 	"be/models"
 	"errors"
 
@@ -38,8 +38,8 @@ func (od *OrderDetailDb) DeleteById(id uint) (gorm.DeletedAt, error) {
 	return orderDetail.DeletedAt, nil
 }
 
-func (od *OrderDetailDb) GetAll(order_id uint) ([]orderDetail.OrderDetailResponse, error) {
-	orderDetailRespArr := []orderDetail.OrderDetailResponse{}
+func (od *OrderDetailDb) GetAll(order_id uint) ([]templates.OrderDetailResponse, error) {
+	orderDetailRespArr := []templates.OrderDetailResponse{}
 
 	res := od.db.Model(&models.OrderDetail{}).Where("order_id = ?", order_id).Find(&orderDetailRespArr)
 

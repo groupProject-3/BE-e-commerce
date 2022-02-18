@@ -13,11 +13,11 @@ import (
 func InitDB(config *configs.AppConfig) *gorm.DB {
 
 	connectionString := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8&parseTime=True&loc=Local",
-		config.Database.Username,
-		config.Database.Password,
-		config.Database.Address,
-		config.Database.Port,
-		config.Database.Name,
+		config.Username,
+		config.Password,
+		config.Address,
+		config.DB_Port,
+		config.Name,
 	)
 	fmt.Println(connectionString)
 	DB, err := gorm.Open(mysql.Open(connectionString), &gorm.Config{})
@@ -32,6 +32,11 @@ func InitDB(config *configs.AppConfig) *gorm.DB {
 }
 
 func AutoMigrate(DB *gorm.DB) {
-	DB.Migrator().DropTable(&models.Cart{}, &models.Order{}, &models.OrderDetail{}, &models.PaymentMethod{}, &models.Product{}, &models.ProductType{}, &models.User{})
-	DB.AutoMigrate(&models.Cart{}, &models.Order{}, &models.OrderDetail{}, &models.PaymentMethod{}, &models.Product{}, &models.ProductType{}, &models.User{})
+	DB.AutoMigrate(&models.ProductType{})
+	DB.AutoMigrate(&models.PaymentMethod{})
+	DB.AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.Product{})
+	DB.AutoMigrate(&models.Cart{})
+	DB.AutoMigrate(&models.Order{})
+	DB.AutoMigrate(&models.OrderDetail{})
 }

@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"be/delivery/controllers/auth"
+	"be/delivery/templates"
 	"be/models"
 
 	"gorm.io/gorm"
@@ -17,7 +17,7 @@ func New(db *gorm.DB) *AuthDb {
 	}
 }
 
-func (ad *AuthDb) Login(UserLogin auth.Userlogin) (models.User, error) {
+func (ad *AuthDb) Login(UserLogin templates.Userlogin) (models.User, error) {
 	user := models.User{}
 	if err := ad.db.Model(&models.User{}).Where("email = ? AND password = ?", UserLogin.Email, UserLogin.Password).First(&user).Error; err != nil {
 		return models.User{}, err

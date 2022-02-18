@@ -1,7 +1,6 @@
-package order
+package templates
 
 import (
-	"be/delivery/controllers/orderDetail"
 	"time"
 )
 
@@ -15,7 +14,7 @@ type OrderResponse struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 
-	Payment_method_id uint                              `json:"payment_method_id"`
-	Status            string                            `json:"status"`
-	OrderDetails      []orderDetail.OrderDetailResponse `json:"orderDetails"`
+	Payment_method_id uint                  `json:"payment_method_id"`
+	Status            string                `json:"status"`
+	OrderDetails      []CartResponse `json:"orderDetails"`
 }

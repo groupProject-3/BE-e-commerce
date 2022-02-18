@@ -2,7 +2,7 @@ package prodType
 
 import (
 	"be/configs"
-	prodType "be/delivery/controllers/prodType"
+	"be/delivery/templates"
 	"be/models"
 	"be/utils"
 	"testing"
@@ -16,7 +16,13 @@ func TestCreate(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.ProductType{})
-	db.Migrator().CreateTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.ProductType{})
 
 	t.Run("success run create", func(t *testing.T) {
 		mockPro := models.ProductType{Name: "anonim1"}
@@ -26,7 +32,7 @@ func TestCreate(t *testing.T) {
 	})
 
 	t.Run("fail run create", func(t *testing.T) {
-		mockPro1 := models.ProductType{Name: "anonim1"}
+		mockPro1 := models.ProductType{Name: "anonim2"}
 		if _, err := repo.Create(mockPro1); err != nil {
 			t.Fatal()
 		}
@@ -41,21 +47,27 @@ func TestUpdateById(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.ProductType{})
-	db.Migrator().CreateTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.ProductType{})
 
 	t.Run("success run UpdateById", func(t *testing.T) {
 		mockPro1 := models.ProductType{Name: "anonim1"}
 		if _, err := repo.Create(mockPro1); err != nil {
 			t.Fatal()
 		}
-		upPro := prodType.ProductTypeRequest{Name: "anonim2"}
+		upPro := templates.ProductTypeRequest{Name: "anonim2"}
 		res, err := repo.UpdateById(1, upPro)
 		assert.Nil(t, err)
 		assert.Equal(t, "anonim2", res.Name)
 	})
 
 	t.Run("fail run UpdateById", func(t *testing.T) {
-		upPro := prodType.ProductTypeRequest{Name: "anonim2"}
+		upPro := templates.ProductTypeRequest{Name: "anonim2"}
 		_, err := repo.UpdateById(10, upPro)
 		assert.NotNil(t, err)
 	})
@@ -66,7 +78,13 @@ func TestDeleteById(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.ProductType{})
-	db.Migrator().CreateTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.ProductType{})
 
 	t.Run("success run DeleteById", func(t *testing.T) {
 		mockPro1 := models.ProductType{Name: "anonim1"}
@@ -90,7 +108,13 @@ func TestGetAll(t *testing.T) {
 	db := utils.InitDB(config)
 	repo := New(db)
 	db.Migrator().DropTable(&models.ProductType{})
-	db.Migrator().CreateTable(&models.ProductType{})
+	db.Migrator().DropTable(&models.PaymentMethod{})
+	db.Migrator().DropTable(&models.User{})
+	db.Migrator().DropTable(&models.Product{})
+	db.Migrator().DropTable(&models.Cart{})
+	db.Migrator().DropTable(&models.Order{})
+	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.ProductType{})
 
 	t.Run("success run GetAll", func(t *testing.T) {
 		mockPro1 := models.ProductType{Name: "anonim1"}
