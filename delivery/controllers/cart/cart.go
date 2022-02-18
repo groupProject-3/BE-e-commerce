@@ -157,12 +157,6 @@ func (cc *CartController) UpdateById() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for update cart", nil))
 		}
 
-
-		priceTotal := res.Qty *uint(res.Price)
-
-
-
-
 		return c.JSON(http.StatusAccepted, templates.Success(http.StatusAccepted, "success update cart", res))
 	}
 }
