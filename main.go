@@ -13,7 +13,7 @@ import (
 	authlib "be/lib/database/auth"
 	cartLib "be/lib/database/cart"
 	orderLib "be/lib/database/order"
-	paymentmethodLib "be/lib/database/paymentMethod"
+	paymentmethodLib "be/lib/database/paymentmethod"
 	prodTypeLib "be/lib/database/prodType"
 	prodLib "be/lib/database/product"
 	userlib "be/lib/database/user"

@@ -3,7 +3,7 @@ package paymentmethod
 import (
 	"be/delivery/middlewares"
 	"be/delivery/templates"
-	paymentmethod "be/lib/database/paymentMethod"
+	paymentmethod "be/lib/database/paymentmethod"
 	"be/models"
 	"net/http"
 	"strconv"
