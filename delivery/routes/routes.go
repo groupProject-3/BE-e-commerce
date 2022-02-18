@@ -74,8 +74,8 @@ func CartPath(e *echo.Echo, cc *cart.CartController) {
 	}))
 
 	g.POST("", cc.Create())
-	g.DELETE("/:id", cc.DeleteById())
-	g.PUT("/:id", cc.UpdateById())
+	g.DELETE("/:prod_id", cc.DeleteById())
+	g.PUT("/:prod_id", cc.UpdateById())
 	g.GET("", cc.GetAll())
 }
 

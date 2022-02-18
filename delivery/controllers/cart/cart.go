@@ -82,8 +82,13 @@ func (cc *CartController) Create() echo.HandlerFunc {
 
 func (cc *CartController) DeleteById() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		id, _ := strconv.Atoi(c.Param("id"))
+		prod_id, _ := strconv.Atoi(c.Param("prod_id"))
 		user_id := uint(middlewares.ExtractTokenId(c))
+
+		id, err1 := cc.repo.FindId(user_id, uint(prod_id))
+		if err1 != nil {
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for update cart", nil))
+		}
 
 		if _, err := cc.repo.DeleteById(uint(id), user_id); err != nil {
 			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for delete cart", nil))
@@ -110,19 +115,27 @@ func (cc *CartController) DeleteById() echo.HandlerFunc {
 
 func (cc *CartController) UpdateById() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		id, _ := strconv.Atoi(c.Param("id"))
+		prod_id, _ := strconv.Atoi(c.Param("prod_id"))
 		user_id := uint(middlewares.ExtractTokenId(c))
 
 		newCart := templates.CartRequest{}
 		if err := c.Bind(&newCart); err != nil {
 			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error bad request for update cart", nil))
 		}
+
+		id, err1 := cc.repo.FindId(user_id, uint(prod_id))
+		if err1 != nil {
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for update cart", nil))
+		}
+
 		log.Info(id, user_id)
+
 		resCart, err := cc.repo.GetById(uint(id), user_id)
 		if err != nil {
 			log.Info(err)
 			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for update cart", nil))
 		}
+
 		if _, err := cc.repo.UpdateById(uint(id), user_id, newCart); err != nil {
 			log.Info(err)
 			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for update cart", nil))
