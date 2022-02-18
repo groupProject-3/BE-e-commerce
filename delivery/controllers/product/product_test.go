@@ -56,6 +56,10 @@ func (m *MockProdLib) GetById(id int) (templates.ProductResponse, error) {
 	return templates.ProductResponse{}, nil
 }
 
+func (m *MockProdLib) UpdateByIdAll(id int, upPro templates.ProductRequest) (models.Product, error) {
+	return models.Product{}, nil
+}
+
 type MockFailProdLib struct{}
 
 func (m *MockFailProdLib) Create(user_id uint, newPro models.Product) (models.Product, error) {
@@ -85,6 +89,10 @@ func (m *MockFailProdLib) GetAll() ([]templates.ProductResponse, error) {
 
 func (m *MockFailProdLib) GetById(id int) (templates.ProductResponse, error) {
 	return templates.ProductResponse{}, errors.New("")
+}
+
+func (m *MockFailProdLib) UpdateByIdAll(id int, upPro templates.ProductRequest) (models.Product, error) {
+	return models.Product{}, errors.New("")
 }
 
 func TestCreate(t *testing.T) {
