@@ -38,7 +38,7 @@ func main() {
 	prodController := product.New(prodRepo)
 
 	cartRepo := cartLib.New(db)
-	cartController := cart.New(cartRepo, prodRepo)
+	cartController := cart.New(cartRepo)
 
 	pmRepo := paymentmethodLib.New(db)
 	pmController := paymentmethod.New(pmRepo)

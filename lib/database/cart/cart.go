@@ -2,9 +2,11 @@ package cart
 
 import (
 	"be/delivery/templates"
+	"be/lib/database/product"
 	"be/models"
 	"errors"
 
+	"github.com/labstack/gommon/log"
 	"gorm.io/gorm"
 )
 
@@ -99,4 +101,122 @@ func (cd *CartDb) GetById(prod_id uint, user_id uint) (templates.CartResponse, e
 	}
 
 	return cartRespArr, nil
+}
+
+func (cd *CartDb) CreateNew(user_id uint, newCart models.Cart) (templates.CartResponse, error) {
+	prod_id := newCart.Product_id
+	cartinit := models.Cart{}
+	row := cd.db.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.product_id = ?", user_id, prod_id).Find(&cartinit)
+
+	if row.Error != nil {
+		return templates.CartResponse{}, row.Error
+	}
+	if row.RowsAffected != 0 {
+		res1, err1 := cd.GetById(prod_id, user_id)
+		if err1 != nil {
+			return templates.CartResponse{}, err1
+		}
+		log.Info(res1.Qty)
+		if _, err := cd.UpdateById(prod_id, user_id, templates.CartRequest{Qty: newCart.Qty}); err != nil {
+			return templates.CartResponse{}, err
+		}
+
+		res2, err2 := product.New(cd.db).GetById(int(prod_id))
+
+		if err2 != nil {
+			return templates.CartResponse{}, err2
+		}
+		log.Info(res2.Qty, newCart.Qty)
+		if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty + (int(res1.Qty) - int(newCart.Qty)))}); err != nil {
+			return templates.CartResponse{}, err
+		}
+
+		res3, err3 := cd.GetById(prod_id, user_id)
+		if err3 != nil {
+			return templates.CartResponse{}, err3
+		}
+		log.Info(res3.Qty)
+		return res3, nil
+	}
+
+	if _, err := cd.Create(user_id, newCart); err != nil {
+		return templates.CartResponse{}, err
+	}
+
+	res2, err2 := product.New(cd.db).GetById(int(prod_id))
+
+	if err2 != nil {
+		return templates.CartResponse{}, err2
+	}
+
+	if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty - (int(newCart.Qty)))}); err != nil {
+		return templates.CartResponse{}, err
+	}
+
+	res3, err3 := cd.GetById(prod_id, user_id)
+	if err3 != nil {
+		return templates.CartResponse{}, err3
+	}
+
+	res3.PriceTotal = res3.Qty * uint(res3.Price)
+
+	return res3, nil
+}
+
+func (cd *CartDb) DeleteNew(prod_id uint, user_id uint) (gorm.DeletedAt, error) {
+
+	cart := models.Cart{}
+
+	res1, err1 := cd.GetById(prod_id, user_id)
+	if err1 != nil {
+		return cart.DeletedAt, err1
+	}
+	log.Info(product.New(cd.db).GetById(int(prod_id)))
+	res := cd.db.Model(&models.Cart{}).Where("product_id = ? AND user_id = ?", prod_id, user_id).Delete(&cart)
+
+	if res.RowsAffected == 0 {
+		return cart.DeletedAt, errors.New(gorm.ErrRecordNotFound.Error())
+	}
+	log.Info(product.New(cd.db).GetById(int(prod_id)))
+	res2, err2 := product.New(cd.db).GetById(int(prod_id))
+	log.Info(res2)
+	if err2 != nil {
+		return cart.DeletedAt, err2
+	}
+	log.Info(product.New(cd.db).GetById(int(prod_id)))
+	if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty + (int(res1.Qty)))}); err != nil {
+		return cart.DeletedAt, err
+	}
+	log.Info(product.New(cd.db).GetById(int(prod_id)))
+	return cart.DeletedAt, nil
+}
+
+func (cd *CartDb) UpdateNew(prod_id uint, user_id uint, upCart templates.CartRequest) (templates.CartResponse, error) {
+
+	res1, err1 := cd.GetById(prod_id, user_id)
+	if err1 != nil {
+		return templates.CartResponse{}, err1
+	}
+	log.Info(res1.Qty, res1.Product_qty)
+	if _, err := cd.UpdateById(prod_id, user_id, templates.CartRequest{Qty: upCart.Qty, Status: "order"}); err != nil {
+		return templates.CartResponse{}, err
+	}
+
+	res2, err2 := product.New(cd.db).GetById(int(prod_id))
+
+	if err2 != nil {
+		return templates.CartResponse{}, err2
+	}
+	if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty + (int(res1.Qty) - int(upCart.Qty)))}); err != nil {
+		return templates.CartResponse{}, err
+	}
+
+	res3, err3 := cd.GetById(prod_id, user_id)
+	if err3 != nil {
+		return templates.CartResponse{}, err3
+	}
+
+	res3.PriceTotal = res3.Qty * uint(res3.Price)
+
+	return res3, nil
 }
