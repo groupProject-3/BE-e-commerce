@@ -127,11 +127,6 @@ func (cd *CartDb) CreateNew(user_id uint, newCart models.Cart) (templates.CartRe
 			return templates.CartResponse{}, err2
 		}
 
-		
-
-
-
-
 		log.Info(res2.Qty, newCart.Qty)
 		if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty + ((res1.Qty) - (newCart.Qty)))}); err != nil {
 			return templates.CartResponse{}, err
