@@ -80,9 +80,12 @@ func (cc *CartController) UpdateById() echo.HandlerFunc {
 
 func (cc *CartController) GetAll() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		log.Info(c.Param("test"))
+		status := c.Param("test")
 		user_id := uint(middlewares.ExtractTokenId(c))
-
-		res, err := cc.repo.GetAll(user_id)
+		log.Info(status)
+		// statusNow := "cart"
+		res, err := cc.repo.GetAll(user_id, status)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for get all cart", err))
 		}

@@ -132,10 +132,10 @@ func TestUpdateById(t *testing.T) {
 			t.Fatal()
 		}
 		UpCart := templates.CartRequest{Status: "order"}
-		log.Info(repo.GetAll(1))
+		// log.Info(repo.GetAll(1))
 		_, err := repo.UpdateById(1, 1, UpCart)
 		assert.Nil(t, err)
-		log.Info(repo.GetAll(1))
+		// log.Info(repo.GetAll(1))
 		// assert.Equal(t, 30, int(res.Qty))
 	})
 
@@ -173,12 +173,12 @@ func TestGetAll(t *testing.T) {
 		if _, err := product.New(db).Create(1, mockProd1); err != nil {
 			t.Fatal()
 		}
-		mockCart1 := models.Cart{Product_id: 1, Qty: 5}
+		mockCart1 := models.Cart{Product_id: 1, Qty: 5,/*  Status: "cart" */}
 		if _, err := repo.Create(1, mockCart1); err != nil {
 			t.Fatal()
 		}
 
-		res, err := repo.GetAll(1)
+		res, err := repo.GetAll(1, "cart")
 		assert.Nil(t, err)
 		log.Info(res)
 	})
@@ -187,7 +187,7 @@ func TestGetAll(t *testing.T) {
 		if _, err := repo.DeleteById(1, 1); err != nil {
 			t.Log()
 		}
-		_, err := repo.GetAll(1)
+		_, err := repo.GetAll(1, "cart")
 		assert.NotNil(t, err)
 	})
 }

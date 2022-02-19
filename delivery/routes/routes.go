@@ -69,14 +69,13 @@ func CartPath(e *echo.Echo, cc *cart.CartController) {
 	g := e.Group("/cart/me", middlewares.JwtMiddleware(), middleware.RemoveTrailingSlash())
 
 	g.Use(middleware.CORS())
-	g.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "method=${method}, uri=${uri}, status=${status}",
-	}))
+	g.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{}))
 
 	g.POST("", cc.Create())
 	g.DELETE("/:prod_id", cc.DeleteById())
 	g.PUT("/:prod_id", cc.UpdateById())
-	g.GET("", cc.GetAll())
+
+	g.GET("/:test", cc.GetAll())
 }
 
 func PaymentMethodPath(e *echo.Echo, pc *paymentmethod.PaymentMethodController) {
@@ -93,7 +92,7 @@ func PaymentMethodPath(e *echo.Echo, pc *paymentmethod.PaymentMethodController) 
 	g.GET("/:id", pc.GetAll())
 }
 
-func OrderPath(e *echo.Echo, oc *order.OrderController)  {
+func OrderPath(e *echo.Echo, oc *order.OrderController) {
 	g := e.Group("/order/me", middlewares.JwtMiddleware(), middleware.RemoveTrailingSlash())
 
 	g.Use(middleware.CORS())
