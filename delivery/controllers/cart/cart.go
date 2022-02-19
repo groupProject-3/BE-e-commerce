@@ -80,10 +80,10 @@ func (cc *CartController) UpdateById() echo.HandlerFunc {
 
 func (cc *CartController) GetAll() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		log.Info(c.Param("test"))
-		status := c.Param("test")
+		// log.Info(c.Param("status"))
+		status := c.Param("filter")
 		user_id := uint(middlewares.ExtractTokenId(c))
-		log.Info(status)
+		// log.Info(status)
 		// statusNow := "cart"
 		res, err := cc.repo.GetAll(user_id, status)
 		if err != nil {

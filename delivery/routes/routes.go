@@ -75,7 +75,7 @@ func CartPath(e *echo.Echo, cc *cart.CartController) {
 	g.DELETE("/:prod_id", cc.DeleteById())
 	g.PUT("/:prod_id", cc.UpdateById())
 
-	g.GET("/:test", cc.GetAll())
+	g.GET("/status/:filter", cc.GetAll())
 }
 
 func PaymentMethodPath(e *echo.Echo, pc *paymentmethod.PaymentMethodController) {
