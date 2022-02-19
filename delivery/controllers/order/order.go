@@ -43,10 +43,9 @@ func (oc *OrderController) Create() echo.HandlerFunc {
 
 func (oc *OrderController) DeleteById() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		id, _ := strconv.Atoi(c.Param("id"))
 		user_id := uint(middlewares.ExtractTokenId(c))
 
-		res, err := oc.repo.DeleteById(uint(id), user_id)
+		res, err := oc.repo.DeleteById(user_id)
 
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for delete order", nil))

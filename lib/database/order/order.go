@@ -27,10 +27,10 @@ func (od *OrderDb) Create(user_id uint, newOrder models.Order) (models.Order, er
 	return newOrder, nil
 }
 
-func (od *OrderDb) DeleteById(id uint, user_id uint) (gorm.DeletedAt, error) {
+func (od *OrderDb) DeleteById(user_id uint) (gorm.DeletedAt, error) {
 	order := models.Order{}
 
-	res := od.db.Model(&models.Order{}).Where("id = ? AND user_id = ?", id, user_id).Delete(&order)
+	res := od.db.Model(&models.Order{}).Where("user_id = ?", user_id).Delete(&order)
 
 	if res.RowsAffected == 0 {
 		return order.DeletedAt, errors.New(gorm.ErrRecordNotFound.Error())
@@ -50,7 +50,7 @@ func (od *OrderDb) GetById(id uint, user_id uint) (templates.OrderResponse, erro
 
 	orderDetails := []templates.CartResponse{}
 
-	resorderDetails := od.db.Model(&models.Order{}).Where("orders.id = ? AND orders.user_id = ? AND carts.status = ?", id, user_id, "order").Select("orders.id as ID, orders.created_at as CreatedAt, orders.updated_at as UpdatedAt, carts.qty as Qty, products.price as Price, products.name as Name, products.image as Image, carts.status as Status, carts.product_id as Product_id").Joins("inner join carts on carts.user_id = orders.user_id").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&orderDetails)
+	resorderDetails := od.db.Model(&models.Order{}).Where("orders.id = ? AND orders.user_id = ? AND carts.status = ? AND carts.deleted_at IS NULL", id, user_id, "order").Select("orders.id as ID, orders.created_at as CreatedAt, orders.updated_at as UpdatedAt, carts.qty as Qty, products.price as Price, products.name as Name, products.image as Image, carts.status as Status, carts.product_id as Product_id").Joins("inner join carts on carts.user_id = orders.user_id").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&orderDetails)
 
 	if resorderDetails.Error != nil {
 		return templates.OrderResponse{}, resorderDetails.Error

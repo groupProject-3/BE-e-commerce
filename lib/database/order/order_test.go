@@ -78,13 +78,13 @@ func TestDeleteById(t *testing.T) {
 		if _, err := repo.Create(1, mockOrder1); err != nil {
 			t.Fatal()
 		}
-		res, err := repo.DeleteById(1, 1)
+		res, err := repo.DeleteById(1)
 		assert.Nil(t, err)
 		assert.Equal(t, true, res.Valid)
 	})
 
 	t.Run("fail run create", func(t *testing.T) {
-		_, err := repo.DeleteById(1, 1)
+		_, err := repo.DeleteById(1)
 		assert.NotNil(t, err)
 	})
 }
