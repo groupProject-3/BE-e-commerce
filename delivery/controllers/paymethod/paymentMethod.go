@@ -34,7 +34,7 @@ func (pc *PaymentMethodController) Create() echo.HandlerFunc {
 
 		if err := c.Bind(&newPm); err != nil || newPm.Name == "" {
 			log.Info(err, newPm)
-			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request for create new payment method", nil))
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request for create new payment method", err))
 		}
 
 		res, err := pc.repo.Create(models.PaymentMethod{Name: newPm.Name})
@@ -59,7 +59,7 @@ func (pc *PaymentMethodController) UpdateById() echo.HandlerFunc {
 
 		if err := c.Bind(&newPm); err != nil || newPm.Name == "" {
 			log.Info(err, newPm)
-			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request for update payment method", nil))
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request for update payment method", err))
 		}
 
 		res, err := pc.repo.UpdateById(id, newPm)
@@ -84,7 +84,7 @@ func (pc *PaymentMethodController) DeleteById() echo.HandlerFunc {
 		res, err := pc.repo.DeleteById(id)
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for delete payment method", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for delete payment method", err))
 		}
 
 		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "success delete payment method", res))
@@ -102,7 +102,7 @@ func (pc *PaymentMethodController) GetAll() echo.HandlerFunc {
 		res, err := pc.repo.GetAll()
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for get all payment method", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for get all payment method", err))
 		}
 
 		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "success get all payment method", res))

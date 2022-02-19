@@ -415,5 +415,4 @@ func TestUpdateNew(t *testing.T) {
 		log.Info(res.Qty)
 		log.Info(res.Product_qty)
 	})
-
 }

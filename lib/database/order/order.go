@@ -60,3 +60,16 @@ func (od *OrderDb) GetById(id uint, user_id uint) (templates.OrderResponse, erro
 
 	return orderResp, nil
 }
+
+func (pd *OrderDb) Update(user_id int, upOr templates.OrderRequest) (models.Order, error) {
+
+	pro := models.Order{}
+
+	res := pd.db.Model(&models.Order{}).Where("user_id = ?", user_id).Updates(models.Order{Payment_method_id: upOr.Payment_method_id, Status: upOr.Status, PhoneNumber: upOr.PhoneNumber}).Find(&pro)
+
+	if res.RowsAffected == 0 {
+		return models.Order{}, errors.New(gorm.ErrRecordNotFound.Error())
+	}
+
+	return pro, nil
+}

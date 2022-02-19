@@ -19,6 +19,6 @@ type CartResponse struct {
 	Name        string `json:"name"`
 	Image       string `json:"image"`
 	Qty         uint   `json:"qty"`
-	Price       int    `json:"price"`
+	Price       uint    `json:"price"`
 	Status      string `json:"status"`
 }

@@ -28,13 +28,13 @@ func (cc *CartController) Create() echo.HandlerFunc {
 
 		newCart := templates.CartRequest{}
 		if err := c.Bind(&newCart); err != nil {
-			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error bad request for create new cart", nil))
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error bad request for create new cart", err))
 		}
 
 		res, err := cc.repo.CreateNew(user_id, models.Cart{Product_id: newCart.Product_id, Qty: newCart.Qty, Status: newCart.Status})
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for add cart", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for add cart", err))
 
 		}
 
@@ -50,7 +50,7 @@ func (cc *CartController) DeleteById() echo.HandlerFunc {
 
 		res, err := cc.repo.DeleteNew(uint(prod_id), user_id)
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for delete cart", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for delete cart", err))
 		}
 
 		return c.JSON(http.StatusOK, templates.Success(http.StatusOK, "success delete cart", res))
@@ -65,13 +65,13 @@ func (cc *CartController) UpdateById() echo.HandlerFunc {
 
 		newCart := templates.CartRequest{}
 		if err := c.Bind(&newCart); err != nil {
-			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error bad request for update cart", nil))
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error bad request for update cart", err))
 		}
 
 		res, err := cc.repo.UpdateNew(uint(prod_id), user_id, newCart)
 		if err != nil {
 			log.Info(err)
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for update cart", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for update cart", err))
 		}
 
 		return c.JSON(http.StatusAccepted, templates.Success(http.StatusAccepted, "success update cart", res))
@@ -84,7 +84,7 @@ func (cc *CartController) GetAll() echo.HandlerFunc {
 
 		res, err := cc.repo.GetAll(user_id)
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for get all cart", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for get all cart", err))
 		}
 
 		return c.JSON(http.StatusOK, templates.Success(http.StatusOK, "success get all cart", res))

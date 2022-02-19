@@ -126,8 +126,14 @@ func (cd *CartDb) CreateNew(user_id uint, newCart models.Cart) (templates.CartRe
 		if err2 != nil {
 			return templates.CartResponse{}, err2
 		}
+
+		
+
+
+
+
 		log.Info(res2.Qty, newCart.Qty)
-		if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty + (int(res1.Qty) - int(newCart.Qty)))}); err != nil {
+		if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty + ((res1.Qty) - (newCart.Qty)))}); err != nil {
 			return templates.CartResponse{}, err
 		}
 
@@ -149,7 +155,7 @@ func (cd *CartDb) CreateNew(user_id uint, newCart models.Cart) (templates.CartRe
 		return templates.CartResponse{}, err2
 	}
 
-	if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty - (int(newCart.Qty)))}); err != nil {
+	if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty - ((newCart.Qty)))}); err != nil {
 		return templates.CartResponse{}, err
 	}
 
@@ -184,7 +190,7 @@ func (cd *CartDb) DeleteNew(prod_id uint, user_id uint) (gorm.DeletedAt, error) 
 		return cart.DeletedAt, err2
 	}
 	log.Info(product.New(cd.db).GetById(int(prod_id)))
-	if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty + (int(res1.Qty)))}); err != nil {
+	if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty + ((res1.Qty)))}); err != nil {
 		return cart.DeletedAt, err
 	}
 	log.Info(product.New(cd.db).GetById(int(prod_id)))
@@ -207,7 +213,7 @@ func (cd *CartDb) UpdateNew(prod_id uint, user_id uint, upCart templates.CartReq
 	if err2 != nil {
 		return templates.CartResponse{}, err2
 	}
-	if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty + (int(res1.Qty) - int(upCart.Qty)))}); err != nil {
+	if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty + ((res1.Qty) - (upCart.Qty)))}); err != nil {
 		return templates.CartResponse{}, err
 	}
 

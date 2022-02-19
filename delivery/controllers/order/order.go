@@ -28,13 +28,13 @@ func (oc *OrderController) Create() echo.HandlerFunc {
 		newOr := templates.OrderRequest{}
 
 		if err := c.Bind(&newOr); err != nil {
-			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error bad request for create new order", nil))
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error bad request for create new order", err))
 		}
 
 		res, err := oc.repo.Create(user_id, models.Order{Payment_method_id: newOr.Payment_method_id})
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for create new order", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for create new order", err))
 		}
 
 		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "success create new order", res))
@@ -48,7 +48,7 @@ func (oc *OrderController) DeleteById() echo.HandlerFunc {
 		res, err := oc.repo.DeleteById(user_id)
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for delete order", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for delete order", err))
 		}
 
 		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "success delete order", res))
@@ -63,9 +63,29 @@ func (oc *OrderController) GetAll() echo.HandlerFunc {
 		res, err := oc.repo.GetById(uint(id), user_id)
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for get order", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for get order", err))
 		}
 
 		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "success get order", res))
+	}
+}
+
+func (oc *OrderController) Update() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		user_id := uint(middlewares.ExtractTokenId(c))
+
+		newOr := templates.OrderRequest{}
+
+		if err := c.Bind(&newOr); err != nil {
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error bad request for update order", err))
+		}
+
+		res, err := oc.repo.Update(int(user_id), newOr)
+
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for update order", err))
+		}
+
+		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "success update order", res))
 	}
 }

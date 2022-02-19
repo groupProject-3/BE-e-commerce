@@ -35,13 +35,13 @@ func (pc *ProdTypeController) Create() echo.HandlerFunc {
 
 		if err := c.Bind(&newProdT); err != nil || newProdT.Name == "" {
 			log.Info(err, newProdT)
-			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request for create new product type", nil))
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request for create new product type", err))
 		}
 
 		res, err := pc.repo.Create(models.ProductType{Name: newProdT.Name})
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for create new product type", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for create new product type", err))
 		}
 
 		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "success create new product Type", templates.ProductTypeResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name}))
@@ -61,13 +61,13 @@ func (pc *ProdTypeController) Put() echo.HandlerFunc {
 		newProdT := templates.ProductTypeRequest{}
 
 		if err := c.Bind(&newProdT); err != nil {
-			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request for update product type", nil))
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error in request for update product type", err))
 		}
 
 		res, err := pc.repo.UpdateById(id, newProdT)
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for update product type", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for update product type", err))
 		}
 
 		return c.JSON(http.StatusAccepted, templates.Success(http.StatusAccepted, "success update product Type", templates.ProductTypeResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name}))
@@ -87,7 +87,7 @@ func (pc *ProdTypeController) Delete() echo.HandlerFunc {
 		res, err := pc.repo.DeleteById(id)
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for delete product type", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for delete product type", err))
 		}
 
 		return c.JSON(http.StatusOK, templates.Success(nil, "success delete product Type", res))
@@ -105,7 +105,7 @@ func (pc *ProdTypeController) GetAll() echo.HandlerFunc {
 		res, err := pc.repo.GetAll()
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for delete product type", nil))
+			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(http.StatusInternalServerError, "error internal server error for delete product type", err))
 		}
 
 		return c.JSON(http.StatusOK, templates.Success(nil, "success delete product Type", res))
