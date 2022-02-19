@@ -398,19 +398,20 @@ func TestUpdateNew(t *testing.T) {
 		if _, err := prodType.New(db).Create(mockProT1); err != nil {
 			t.Fatal()
 		}
-		mockProd1 := models.Product{Product_type_id: 1, Name: "anonim1 product", Price: 1000, Qty: 20, Description: "anonim1 Description"}
+		mockProd1 := models.Product{Product_type_id: 1, Name: "anonim1 product", Price: 1000, Qty: 10, Description: "anonim1 Description"}
 		if _, err := product.New(db).Create(1, mockProd1); err != nil {
 			t.Fatal()
 		}
-		mockCart1 := models.Cart{Product_id: 1, Qty: 5}
+		mockCart1 := models.Cart{Product_id: 1, Qty: 1}
 		if _, err := repo.CreateNew(1, mockCart1); err != nil {
 			t.Fatal()
 		}
 
-		mockCart := templates.CartRequest{Qty: 10, Status: "order"}
-		res, err := repo.UpdateNew(1, 1, mockCart)
+		mockCart := templates.CartRequest{Qty: 5, Status: "order"}
+		res, err := repo.UpdateCart(1, 1, mockCart)
 		assert.Nil(t, err)
 		assert.NotNil(t, res)
+		log.Info(err)
 		log.Info(res.Status)
 		log.Info(res.Qty)
 		log.Info(res.Product_qty)

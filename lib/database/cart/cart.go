@@ -150,7 +150,7 @@ func (cd *CartDb) CreateNew(user_id uint, newCart models.Cart) (templates.CartRe
 		return templates.CartResponse{}, err2
 	}
 
-	if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty - ((newCart.Qty)))}); err != nil {
+	if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty - (newCart.Qty))}); err != nil {
 		return templates.CartResponse{}, err
 	}
 
@@ -185,7 +185,7 @@ func (cd *CartDb) DeleteNew(prod_id uint, user_id uint) (gorm.DeletedAt, error) 
 		return cart.DeletedAt, err2
 	}
 	log.Info(product.New(cd.db).GetById(int(prod_id)))
-	if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty + ((res1.Qty)))}); err != nil {
+	if _, err := product.New(cd.db).UpdateByIdAll(int(prod_id), templates.ProductRequest{Qty: (res2.Qty + (res1.Qty))}); err != nil {
 		return cart.DeletedAt, err
 	}
 	log.Info(product.New(cd.db).GetById(int(prod_id)))
@@ -219,5 +219,91 @@ func (cd *CartDb) UpdateNew(prod_id uint, user_id uint, upCart templates.CartReq
 
 	res3.PriceTotal = res3.Qty * uint(res3.Price)
 
+	return res3, nil
+}
+
+func (cd *CartDb) UpdateTranx(prod_id uint, user_id uint, upCart templates.CartRequest) (templates.CartResponse, error) {
+
+	tx := cd.db.Begin()
+
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	if err := tx.Error; err != nil {
+		return templates.CartResponse{}, err
+	}
+	log.Info(upCart.Qty)
+	resCart1 := models.Cart{}
+
+	if err := tx.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.product_id = ?", user_id, prod_id).Find(&resCart1).Error; err != nil {
+		tx.Rollback()
+		return templates.CartResponse{}, err
+	}
+	log.Info(resCart1.Qty)
+
+	cartInit1 := models.Cart{}
+
+	if res := tx.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.product_id = ?", user_id, prod_id).Find(&cartInit1); res.Error != nil {
+		tx.Rollback()
+		return templates.CartResponse{}, res.Error
+	}
+
+	if res := tx.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.product_id = ?", user_id, prod_id).Delete(&cartInit1); res.RowsAffected == 0 {
+		tx.Rollback()
+		return templates.CartResponse{}, errors.New(gorm.ErrRecordNotFound.Error())
+	}
+
+	if res := tx.Create(&models.Cart{User_id: user_id, Product_id: prod_id, Qty: cartInit1.Qty, Status: cartInit1.Status}); res.Error != nil {
+		tx.Rollback()
+		return templates.CartResponse{}, res.Error
+	}
+
+	cartInit2 := models.Cart{}
+
+	if res := tx.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.product_id = ?", user_id, prod_id).Find(&cartInit2); res.Error != nil {
+		tx.Rollback()
+		return templates.CartResponse{}, res.Error
+	}
+
+	if res := tx.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.product_id = ?", user_id, prod_id).Updates(models.Cart{Qty: upCart.Qty, Status: upCart.Status}).First(&cartInit2); res.Error != nil {
+		tx.Rollback()
+		return templates.CartResponse{}, res.Error
+	}
+
+	resProd1 := models.Product{}
+
+	if res := tx.Model(&models.Product{}).Where("products.id = ?", prod_id).Find(&resProd1); res.Error != nil {
+		tx.Rollback()
+		return templates.CartResponse{}, res.Error
+	}
+
+	if res := tx.Model(&models.Product{}).Where("products.id = ?", prod_id).Updates(models.Product{Qty: resProd1.Qty + int(resCart1.Qty-upCart.Qty)}); res.Error != nil {
+		tx.Rollback()
+		return templates.CartResponse{}, res.Error
+	}
+
+	if res := tx.Model(&models.Product{}).Where("products.id = ?", prod_id).Find(&resProd1); res.Error != nil || resProd1.Qty < 0 {
+		tx.Rollback()
+		return templates.CartResponse{}, res.Error
+	}
+
+	// log.Info(tx.Commit().Error)
+
+	return templates.CartResponse{}, tx.Commit().Error
+}
+
+func (cd *CartDb) UpdateCart(prod_id uint, user_id uint, upCart templates.CartRequest) (templates.CartResponse, error) {
+
+	if _, err1 := cd.UpdateTranx(prod_id, user_id, upCart); err1 != nil {
+		return templates.CartResponse{}, err1
+	}
+
+	res3, err3 := cd.GetById(prod_id, user_id)
+	if err3 != nil || res3.Qty != upCart.Qty {
+		return res3, errors.New(gorm.ErrInvalidTransaction.Error())
+	}
 	return res3, nil
 }

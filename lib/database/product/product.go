@@ -29,7 +29,7 @@ func (pd *ProductDb) Create(user_id uint, newPro models.Product) (models.Product
 func (pd *ProductDb) UpdateById(id int, user_id uint, upPro templates.ProductRequest) (models.Product, error) {
 	pro := models.Product{}
 
-	res := pd.db.Model(&models.Product{}).Where("id = ? AND user_id = ?", id, user_id).Updates(models.Product{Name: upPro.Name, Image: pro.Image, Product_type_id: upPro.Product_type_id, Qty: upPro.Qty, Price: upPro.Price, Description: upPro.Description}).First(&pro)
+	res := pd.db.Model(&models.Product{}).Where("id = ? AND user_id = ?", id, user_id).Updates(models.Product{Name: upPro.Name, Image: pro.Image, Product_type_id: upPro.Product_type_id, Qty: int(upPro.Qty), Price: upPro.Price, Description: upPro.Description}).First(&pro)
 
 	if res.RowsAffected == 0 {
 		return models.Product{}, errors.New(gorm.ErrRecordNotFound.Error())
@@ -97,7 +97,7 @@ func (pd *ProductDb) GetById(id int) (templates.ProductResponse, error) {
 func (pd *ProductDb) UpdateByIdAll(id int, upPro templates.ProductRequest) (models.Product, error) {
 	pro := models.Product{}
 
-	res := pd.db.Model(&models.Product{}).Where("id = ?", id).Updates(models.Product{Name: upPro.Name, Image: pro.Image, Product_type_id: upPro.Product_type_id, Qty: upPro.Qty, Price: upPro.Price, Description: upPro.Description}).First(&pro)
+	res := pd.db.Model(&models.Product{}).Where("id = ?", id).Updates(models.Product{Name: upPro.Name, Image: pro.Image, Product_type_id: upPro.Product_type_id, Qty: int(upPro.Qty), Price: upPro.Price, Description: upPro.Description}).First(&pro)
 
 	if res.RowsAffected == 0 {
 		return models.Product{}, errors.New(gorm.ErrRecordNotFound.Error())

@@ -31,14 +31,14 @@ func (pc *ProdController) Create() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, templates.BadRequest(err, "error bad request for create new product", nil))
 		}
 
-		res, err := pc.repo.Create(user_id, models.Product{Name: newProd.Name, Product_type_id: newProd.Product_type_id, Price: newProd.Price, Qty: newProd.Qty, Description: newProd.Description})
+		res, err := pc.repo.Create(user_id, models.Product{Name: newProd.Name, Product_type_id: newProd.Product_type_id, Price: newProd.Price, Qty: int(newProd.Qty), Description: newProd.Description})
 		log.Info(err)
 		log.Info(newProd)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for create product", err))
 		}
 
-		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "success create new product", templates.ProductResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name, Image: res.Image, Price: res.Price, Qty: res.Qty, Description: res.Description}))
+		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "success create new product", templates.ProductResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name, Image: res.Image, Price: res.Price, Qty: uint(res.Qty), Description: res.Description}))
 	}
 }
 
@@ -58,7 +58,7 @@ func (pc *ProdController) UpdateById() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for update product", err))
 		}
 
-		return c.JSON(http.StatusAccepted, templates.Success(http.StatusAccepted, "success update product", templates.ProductResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name, Image: res.Image, Price: res.Price, Qty: res.Qty, Description: res.Description}))
+		return c.JSON(http.StatusAccepted, templates.Success(http.StatusAccepted, "success update product", templates.ProductResponse{ID: res.ID, CreatedAt: res.CreatedAt, UpdatedAt: res.UpdatedAt, Name: res.Name, Image: res.Image, Price: res.Price, Qty: uint(res.Qty), Description: res.Description}))
 	}
 }
 

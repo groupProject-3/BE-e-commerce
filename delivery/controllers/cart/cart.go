@@ -68,7 +68,7 @@ func (cc *CartController) UpdateById() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error bad request for update cart", err))
 		}
 
-		res, err := cc.repo.UpdateNew(uint(prod_id), user_id, newCart)
+		res, err := cc.repo.UpdateCart(uint(prod_id), user_id, newCart)
 		if err != nil {
 			log.Info(err)
 			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server for update cart", err))

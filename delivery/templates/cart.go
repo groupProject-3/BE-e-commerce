@@ -14,7 +14,7 @@ type CartResponse struct {
 	UpdatedAt time.Time `json:"updated_at"`
 
 	Product_id  uint   `json:"product_id"`
-	Product_qty uint   `json:"product_qty"`
+	Product_qty int   `json:"product_qty"`
 	PriceTotal  uint   `json:"pricetotal"`
 	Name        string `json:"name"`
 	Image       string `json:"image"`
