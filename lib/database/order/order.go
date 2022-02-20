@@ -51,7 +51,7 @@ func (od *OrderDb) GetById(user_id uint) (templates.OrderResponse, error) {
 
 	orderDetails := []templates.CartResponse{}
 
-	resorderDetails := od.db.Model(&models.Order{}).Where("orders.id = ? AND orders.user_id = ? AND carts.status = ? AND carts.deleted_at IS NULL", orderResp.ID, user_id, "order").Select("orders.id as ID, orders.created_at as CreatedAt, orders.updated_at as UpdatedAt, carts.qty as Qty, products.price as Price, products.name as Name, products.image as Image, carts.status as Status, carts.product_id as Product_id").Joins("inner join carts on carts.user_id = orders.user_id").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&orderDetails)
+	resorderDetails := od.db.Model(&models.Order{}).Where("orders.id = ? AND orders.user_id = ? AND carts.status = ? AND carts.deleted_at IS NULL", orderResp.ID, user_id, "order").Select("orders.id as ID, orders.created_at as CreatedAt, orders.updated_at as UpdatedAt, carts.qty as Qty, products.price as Price, products.name as Name, products.image as Image, carts.status as Status, carts.product_id as Product_id, products.qty as Product_qty, carts.qty * products.price as PriceTotal").Joins("inner join carts on carts.user_id = orders.user_id").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&orderDetails)
 
 	if resorderDetails.Error != nil {
 		return templates.OrderResponse{}, resorderDetails.Error
