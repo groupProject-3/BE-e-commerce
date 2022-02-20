@@ -123,7 +123,6 @@ func TestCreate(t *testing.T) {
 		assert.Equal(t, response.Message, "success login")
 		assert.NotNil(t, response.Data["token"])
 	})
-
 	t.Run("BadRequest", func(t *testing.T) {
 		e := echo.New()
 		reqBody, _ := json.Marshal(map[string]int{"name": 1})

@@ -28,9 +28,11 @@ func (pc *ProdController) Create() echo.HandlerFunc {
 
 		newProd := templates.ProductRequest{}
 		if err := c.Bind(&newProd); err != nil {
-			return c.JSON(http.StatusBadRequest, templates.BadRequest(err, "error bad request for create new product", nil))
+			// log.Info(newProd)
+			// log.Info(err)
+			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error bad request for create new product", nil))
 		}
-
+		// log.Info(newProd)
 		res, err := pc.repo.Create(user_id, models.Product{Name: newProd.Name, Product_type_id: newProd.Product_type_id, Price: newProd.Price, Qty: int(newProd.Qty), Description: newProd.Description})
 		log.Info(err)
 		log.Info(newProd)
