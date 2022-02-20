@@ -134,7 +134,7 @@ func TestCreateNew(t *testing.T) {
 			t.Fatal()
 		}
 
-		mockCart := models.Cart{Product_id: 1, Qty: 30}
+		mockCart := models.Cart{Product_id: 1, Qty: 20}
 		res, err := repo.CreateNew(1, mockCart)
 		assert.Nil(t, err)
 		assert.NotNil(t, res)
@@ -223,12 +223,12 @@ func TestUpdateCart(t *testing.T) {
 		if _, err := product.New(db).Create(1, mockProd1); err != nil {
 			t.Fatal()
 		}
-		mockCart1 := models.Cart{Product_id: 1, Qty: 1, Status: "order"}
+		mockCart1 := models.Cart{Product_id: 1, Qty: 6, Status: "order"}
 		if _, err := repo.CreateNew(1, mockCart1); err != nil {
 			t.Fatal()
 		}
 
-		mockCart := templates.CartRequest{Qty: 5, Status: "payed"}
+		mockCart := templates.CartRequest{Qty: 10}
 		res, err := repo.UpdateCart(1, 1, mockCart)
 		assert.Nil(t, err)
 		assert.NotNil(t, res)

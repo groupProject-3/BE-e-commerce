@@ -85,8 +85,8 @@ func (cd *CartDb) CreateTranx(user_id uint, newCart models.Cart) (models.Cart, e
 		tx.Rollback()
 		return models.Cart{}, res.Error
 	}
-
-	if res := tx.Model(&models.Product{}).Where("products.id = ?", prod_id).Updates(models.Product{Qty: resProd1.Qty - int(cartInit.Qty)}); res.Error != nil {
+	plus := resProd1.Qty - int(cartInit.Qty)
+	if res := tx.Model(&models.Product{}).Where("products.id = ?", prod_id).Update("qty", plus); res.Error != nil {
 		tx.Rollback()
 		return models.Cart{}, res.Error
 	}
@@ -109,7 +109,7 @@ func (cd *CartDb) CreateNew(user_id uint, newCart models.Cart) (templates.CartRe
 
 	res3, err3 := cd.GetById(res1.Product_id, user_id, res1.Status)
 	if err3 != nil || res3.Qty != newCart.Qty {
-		return templates.CartResponse{}, err3
+		return templates.CartResponse{}, errors.New(gorm.ErrInvalidTransaction.Error())
 	}
 	// log.Info(newCart.Qty, res1.Qty, res3.Qty)
 
@@ -148,8 +148,8 @@ func (cd *CartDb) DeleteTranx(prod_id uint, user_id uint) (models.Cart, error) {
 		tx.Rollback()
 		return models.Cart{}, res.Error
 	}
-
-	if res := tx.Model(&models.Product{}).Where("products.id = ?", prod_id).Updates(models.Product{Qty: resProd1.Qty + int(cartInit1.Qty)}); res.Error != nil {
+	plus := resProd1.Qty + int(cartInit1.Qty)
+	if res := tx.Model(&models.Product{}).Where("products.id = ?", prod_id).Update("qty", plus); res.Error != nil {
 		tx.Rollback()
 		return models.Cart{}, res.Error
 	}
@@ -236,13 +236,20 @@ func (cd *CartDb) UpdateTranx(prod_id uint, user_id uint, upCart templates.CartR
 		tx.Rollback()
 		return models.Cart{}, res.Error
 	}
-
-	if res := tx.Model(&models.Product{}).Where("products.id = ?", prod_id).Updates(models.Product{Qty: resProd1.Qty + int(resCart1.Qty-upCart.Qty)}); res.Error != nil {
+	var plus int
+	log.Info(resProd1.Qty, resCart1.Qty, upCart.Qty)
+	if resCart1.Qty < upCart.Qty {
+		plus = (resProd1.Qty + int(resCart1.Qty)) - int(upCart.Qty)
+	} else {
+		plus = (resProd1.Qty + int(resCart1.Qty)) - int(upCart.Qty)
+	}
+	log.Info(plus)
+	if res := tx.Model(&models.Product{}).Where("products.id = ?", prod_id).Update("qty", plus); res.Error != nil {
 		tx.Rollback()
 		return models.Cart{}, res.Error
 	}
 
-	if res := tx.Model(&models.Product{}).Where("products.id = ?", prod_id).Find(&resProd1); res.Error != nil || resProd1.Qty < 0 {
+	if res := tx.Model(&models.Product{}).Where("products.id = ?", prod_id).Last(&resProd1); res.Error != nil || resProd1.Qty < 0 {
 		tx.Rollback()
 		return models.Cart{}, res.Error
 	}
