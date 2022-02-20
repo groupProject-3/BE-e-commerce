@@ -134,7 +134,7 @@ func TestCreateNew(t *testing.T) {
 			t.Fatal()
 		}
 
-		mockCart := models.Cart{Product_id: 1, Qty: 10}
+		mockCart := models.Cart{Product_id: 1, Qty: 30}
 		res, err := repo.CreateNew(1, mockCart)
 		assert.Nil(t, err)
 		assert.NotNil(t, res)
@@ -142,14 +142,14 @@ func TestCreateNew(t *testing.T) {
 		log.Info(res.Product_qty)
 	})
 
-	t.Run("success run create update", func(t *testing.T) {
+	// t.Run("success run create update", func(t *testing.T) {
 
-		mockCart := models.Cart{Product_id: 1, Qty: 5}
-		res, err := repo.CreateNew(1, mockCart)
-		assert.Nil(t, err)
-		log.Info(res.Qty)
-		log.Info(res.Product_qty)
-	})
+	// 	mockCart := models.Cart{Product_id: 1, Qty: 25}
+	// 	res, err := repo.CreateNew(1, mockCart)
+	// 	assert.Nil(t, err)
+	// 	log.Info(res.Qty)
+	// 	log.Info(res.Product_qty)
+	// })
 
 }
 

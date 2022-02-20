@@ -20,7 +20,7 @@ func New(db *gorm.DB) *CartDb {
 }
 
 func (cd *CartDb) GetAll(user_id uint, status string) ([]templates.CartResponse, error) {
-	
+
 	cartRespArr := []templates.CartResponse{}
 	log.Info(status)
 	res := cd.db.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.status = ?", user_id, status).Select("carts.id as ID, carts.created_at as CreatedAt, carts.updated_at as UpdatedAt, carts.qty as Qty, products.price as Price, products.name as Name, products.image as Image, carts.status as Status, carts.product_id as Product_id, products.qty as Product_qty, carts.qty * products.price as PriceTotal ").Joins("inner join products on products.id = carts.product_id").Order("products.id asc").Find(&cartRespArr)
@@ -104,13 +104,14 @@ func (cd *CartDb) CreateNew(user_id uint, newCart models.Cart) (templates.CartRe
 	var err1 error
 	newCart.User_id = user_id
 	if res1, err1 = cd.CreateTranx(user_id, newCart); err1 != nil {
-		return templates.CartResponse{}, err1
+		return templates.CartResponse{}, errors.New(gorm.ErrInvalidTransaction.Error())
 	}
 
 	res3, err3 := cd.GetById(res1.Product_id, user_id, res1.Status)
-	if err3 != nil {
+	if err3 != nil || res3.Qty != newCart.Qty {
 		return templates.CartResponse{}, err3
 	}
+	// log.Info(newCart.Qty, res1.Qty, res3.Qty)
 
 	return res3, nil
 }
@@ -166,7 +167,7 @@ func (cd *CartDb) DeleteNew(prod_id uint, user_id uint) (models.Cart, error) {
 	var err1 error
 
 	if res1, err1 = cd.DeleteTranx(prod_id, user_id); err1 != nil {
-		return models.Cart{}, err1
+		return models.Cart{}, errors.New(gorm.ErrInvalidTransaction.Error())
 	}
 
 	return res1, nil
