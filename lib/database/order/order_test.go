@@ -118,7 +118,7 @@ func TestGetById(t *testing.T) {
 			t.Fatal()
 		}
 		mockCart1 := models.Cart{Product_id: 1, Qty: 10, Status: "order"}
-		if _, err := cart.New(db).Create(1, mockCart1); err != nil {
+		if _, err := cart.New(db).CreateNew(1, mockCart1); err != nil {
 			t.Fatal()
 		}
 		mockPm1 := models.PaymentMethod{Name: "anonim1"}

@@ -38,7 +38,7 @@ func (cc *CartController) Create() echo.HandlerFunc {
 
 		}
 
-		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "success create new cart", res))
+		return c.JSON(http.StatusCreated, templates.Success(http.StatusCreated, "success add cart", res))
 
 	}
 }
@@ -67,7 +67,9 @@ func (cc *CartController) UpdateById() echo.HandlerFunc {
 		if err := c.Bind(&newCart); err != nil {
 			return c.JSON(http.StatusBadRequest, templates.BadRequest(nil, "error bad request for update cart", err))
 		}
-
+		log.Info(newCart)
+		log.Info(newCart.Qty)
+		log.Info(newCart.Status)
 		res, err := cc.repo.UpdateCart(uint(prod_id), user_id, newCart)
 		if err != nil {
 			log.Info(err)
