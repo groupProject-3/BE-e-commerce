@@ -66,7 +66,7 @@ func (pd *OrderDb) Update(user_id int, upOr templates.OrderRequest) (models.Orde
 
 	pro := models.Order{}
 
-	res := pd.db.Model(&models.Order{}).Where("user_id = ?", user_id).Updates(models.Order{Payment_method_id: upOr.Payment_method_id, Status: upOr.Status, PhoneNumber: upOr.PhoneNumber}).Find(&pro)
+	res := pd.db.Model(&models.Order{}).Where("user_id = ?", user_id).Updates(models.Order{Payment_method_id: upOr.Payment_method_id, Status: upOr.Status, PhoneNumber: upOr.PhoneNumber, Address: upOr.Address}).Find(&pro)
 
 	if res.RowsAffected == 0 {
 		return models.Order{}, errors.New(gorm.ErrRecordNotFound.Error())

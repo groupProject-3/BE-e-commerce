@@ -8,6 +8,7 @@ type OrderRequest struct {
 	Payment_method_id uint   `json:"payment_method_id"`
 	Status            string `json:"status"`
 	PhoneNumber       uint   `json:"phonenumber"`
+	Address           string `json:"address"`
 }
 
 type OrderResponse struct {
@@ -17,6 +18,7 @@ type OrderResponse struct {
 	Name              string         `json:"name"`
 	Payment_method_id uint           `json:"payment_method_id"`
 	Status            string         `json:"status"`
+	Address           string         `json:"address"`
 	PhoneNumber       uint           `json:"phonenumber"`
 	OrderDetails      []CartResponse `json:"orderDetails"`
 }
