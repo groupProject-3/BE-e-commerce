@@ -33,7 +33,7 @@ func initConfig() *AppConfig {
 	var defaultConfig AppConfig
 	defaultConfig.Port = 8000
 	defaultConfig.Driver = getEnv("DRIVER", "mysql")
-	defaultConfig.Name = getEnv("NAME", "crud_api")
+	defaultConfig.Name = getEnv("NAME", "crud_api_yaml")
 	defaultConfig.Address = getEnv("ADDRESS", "localhost")
 	defaultConfig.DB_Port = 3306
 	defaultConfig.Username = getEnv("USERNAME", "root") /* "root" */

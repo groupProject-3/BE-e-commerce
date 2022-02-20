@@ -2,6 +2,7 @@ package order
 
 import (
 	"be/delivery/templates"
+	"be/lib/database/cart"
 	"be/models"
 	"errors"
 
@@ -42,7 +43,7 @@ func (od *OrderDb) DeleteById(user_id uint) (gorm.DeletedAt, error) {
 func (od *OrderDb) GetById(id uint, user_id uint) (templates.OrderResponse, error) {
 	orderResp := templates.OrderResponse{}
 
-	res := od.db.Model(&models.Order{}).Where("orders.id = ? AND orders.user_id = ?", id, user_id).Select("orders.id as ID, orders.created_at as CreatedAt, orders.updated_at as UpdatedAt, users.name as Name, orders.payment_method_id as Payment_method_id, orders.status as Status").Joins("inner join users on users.id = orders.user_id").First(&orderResp)
+	res := od.db.Model(&models.Order{}).Where("orders.id = ? AND orders.user_id = ?", id, user_id).Select("orders.id as ID, orders.created_at as CreatedAt, orders.updated_at as UpdatedAt, users.name as Name, orders.payment_method_id as Payment_method_id, orders.status as Status").Joins("inner join users on users.id = orders.user_id").Last(&orderResp)
 
 	if res.RowsAffected == 0 {
 		return templates.OrderResponse{}, res.Error
@@ -68,6 +69,26 @@ func (pd *OrderDb) Update(user_id int, upOr templates.OrderRequest) (models.Orde
 	res := pd.db.Model(&models.Order{}).Where("user_id = ?", user_id).Updates(models.Order{Payment_method_id: upOr.Payment_method_id, Status: upOr.Status, PhoneNumber: upOr.PhoneNumber}).Find(&pro)
 
 	if res.RowsAffected == 0 {
+		return models.Order{}, errors.New(gorm.ErrRecordNotFound.Error())
+	}
+
+	cartRespArr := []models.Cart{}
+
+	res1 := pd.db.Model(&models.Cart{}).Where("carts.user_id = ? AND carts.status = ?", user_id, "order").Find(&cartRespArr)
+
+	if res1.Error != nil {
+		return models.Order{}, errors.New(gorm.ErrRecordNotFound.Error())
+	}
+
+	for i := 0; i < len(cartRespArr); i++ {
+		if _, err := cart.New(pd.db).UpdateTranx(cartRespArr[i].Product_id, uint(user_id), templates.CartRequest{Status: "payed"}); err != nil {
+			return models.Order{}, err
+		}
+	}
+
+	res2 := pd.db.Model(&models.Order{}).Where("user_id = ?", user_id).Delete(&pro)
+
+	if res2.RowsAffected == 0 {
 		return models.Order{}, errors.New(gorm.ErrRecordNotFound.Error())
 	}
 

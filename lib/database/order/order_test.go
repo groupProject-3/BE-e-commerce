@@ -154,6 +154,7 @@ func TestUpdate(t *testing.T) {
 	db.Migrator().DropTable(&models.Cart{})
 	db.Migrator().DropTable(&models.Order{})
 	db.Migrator().DropTable(&models.OrderDetail{})
+	db.AutoMigrate(&models.Cart{})
 	db.AutoMigrate(&models.Order{})
 
 	t.Run("success run create", func(t *testing.T) {
@@ -165,7 +166,18 @@ func TestUpdate(t *testing.T) {
 		if _, err := paymentmethod.New(db).Create(mockPm1); err != nil {
 			t.Fatal()
 		}
-
+		mockProT1 := models.ProductType{Name: "anonim1 prot"}
+		if _, err := prodType.New(db).Create(mockProT1); err != nil {
+			t.Fatal()
+		}
+		mockProd1 := models.Product{Product_type_id: 1, Name: "anonim1 product", Price: 1000, Qty: 10, Description: "anonim1 Description"}
+		if _, err := product.New(db).Create(1, mockProd1); err != nil {
+			t.Fatal()
+		}
+		mockCart1 := models.Cart{Product_id: 1, Qty: 5, Status: "order"}
+		if _, err := cart.New(db).CreateNew(1, mockCart1); err != nil {
+			t.Fatal()
+		}
 		mockOrder1 := models.Order{Payment_method_id: 1}
 		if _, err := repo.Create(1, mockOrder1); err != nil {
 			t.Fatal()
