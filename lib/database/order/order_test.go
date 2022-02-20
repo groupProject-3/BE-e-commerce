@@ -130,7 +130,7 @@ func TestGetById(t *testing.T) {
 		if _, err := repo.Create(1, mockOrder1); err != nil {
 			t.Fatal()
 		}
-		res, err := repo.GetById(1, 1)
+		res, err := repo.GetById(1)
 		assert.Nil(t, err)
 		assert.NotNil(t, res)
 		log.Info(res)
@@ -138,7 +138,7 @@ func TestGetById(t *testing.T) {
 	})
 
 	t.Run("fail run create", func(t *testing.T) {
-		_, err := repo.GetById(10, 10)
+		_, err := repo.GetById(10)
 		assert.NotNil(t, err)
 	})
 }

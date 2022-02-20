@@ -6,7 +6,6 @@ import (
 	"be/lib/database/order"
 	"be/models"
 	"net/http"
-	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -57,10 +56,9 @@ func (oc *OrderController) DeleteById() echo.HandlerFunc {
 
 func (oc *OrderController) GetAll() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		id, _ := strconv.Atoi(c.Param("id"))
 		user_id := uint(middlewares.ExtractTokenId(c))
 
-		res, err := oc.repo.GetById(uint(id), user_id)
+		res, err := oc.repo.GetById(user_id)
 
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, templates.InternalServerError(nil, "error internal server error for get order", err))

@@ -102,7 +102,7 @@ func OrderPath(e *echo.Echo, oc *order.OrderController) {
 
 	g.POST("", oc.Create())
 	g.DELETE("", oc.DeleteById())
-	g.GET("/:id", oc.GetAll())
+	g.GET("", oc.GetAll())
 	g.PUT("", oc.Update())
 }
 
